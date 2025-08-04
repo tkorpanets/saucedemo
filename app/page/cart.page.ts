@@ -1,16 +1,13 @@
-import { Page, Locator, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { AppPage } from "../abstractClasses";
+import { step } from "../../misc/step";
 
-export class CartPage {
-  readonly page: Page;
-  readonly buttonContinueShopping: Locator;
+export class Cart extends AppPage {
+  private buttonContinueShopping = this.page.getByRole("button", {
+    name: "Continue Shopping",
+  });
 
-  constructor(page: Page) {
-    this.page = page;
-    this.buttonContinueShopping = page.getByRole("button", {
-      name: "Continue Shopping",
-    });
-  }
-
+  @step()
   async verifyItemPrice(
     productName: string,
     priceValue: string
@@ -21,6 +18,7 @@ export class CartPage {
     await expect(price).toHaveText(priceValue);
   }
 
+  @step()
   async removeProduct(productName: string): Promise<void> {
     const buttonRemove = this.page.locator(
       `//*[contains(text(), "${productName}")]/ancestor::*[@class="cart_item"]//button[contains(text(), "Remove")]`
@@ -29,6 +27,7 @@ export class CartPage {
     await expect(buttonRemove).not.toBeVisible();
   }
 
+  @step()
   async clickButtonContinueShopping() {
     await this.buttonContinueShopping.click();
   }

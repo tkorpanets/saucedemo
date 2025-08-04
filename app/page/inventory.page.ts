@@ -1,20 +1,13 @@
-import { Page, Locator, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { AppPage } from "../abstractClasses";
+import { step } from "../../misc/step";
 
-export class InventoryPage {
-  readonly page: Page;
-  readonly products: Locator;
-  readonly buttonAddToCart: Locator;
-  readonly shoppingCartBadge: Locator;
-  readonly shoppingCartLink: Locator;
-  readonly price: Locator;
+export class Inventory extends AppPage {
+  private products = this.page.locator(".inventory_item");
+  private shoppingCartBadge = this.page.locator(".shopping_cart_badge");
+  private shoppingCartLink = this.page.locator(".shopping_cart_link");
 
-  constructor(page: Page) {
-    this.page = page;
-    this.products = page.locator(".inventory_item");
-    this.shoppingCartBadge = page.locator(".shopping_cart_badge");
-    this.shoppingCartLink = page.locator(".shopping_cart_link");
-  }
-
+  @step()
   async validateAllProducts(): Promise<void> {
     const count = await this.products.count();
 
@@ -33,6 +26,7 @@ export class InventoryPage {
     }
   }
 
+  @step()
   async getItemPrice(productName: string): Promise<string> {
     const price = this.page.locator(
       `//*[contains(text(), "${productName}")]/ancestor::*[@class="inventory_item"]//*[contains(@class, "inventory_item_price")]`
@@ -41,6 +35,7 @@ export class InventoryPage {
     return priceText;
   }
 
+  @step()
   async addProductToCart(productName: string): Promise<void> {
     const buttonAddToCart = this.page.locator(
       `//*[contains(text(), "${productName}")]/ancestor::*[@class="inventory_item"]//*[contains(text(), "Add to cart")]`
@@ -48,6 +43,7 @@ export class InventoryPage {
     await buttonAddToCart.click();
   }
 
+  @step()
   async verifyShoppingCartBadge(
     state: "visible" | "notVisible",
     count?: string
@@ -59,16 +55,19 @@ export class InventoryPage {
     }
   }
 
+  @step()
   async openCart(): Promise<void> {
     await this.shoppingCartLink.click();
   }
 
+  @step()
   async sortBy(option: string): Promise<void> {
     await this.page
       .locator('select[data-test="product-sort-container"]')
       .selectOption({ label: option });
   }
 
+  @step()
   async getAllProductPrices(): Promise<number[]> {
     const priceLocators = this.page.locator(".inventory_item_price");
     const count = await priceLocators.count();

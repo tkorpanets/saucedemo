@@ -1,23 +1,19 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { AppPage } from "../abstractClasses";
+import { step } from "../../misc/step";
 
-export class LoginPage {
-  readonly page: Page;
-  readonly inputUsername: Locator;
-  readonly inputPassword: Locator;
-  readonly buttonLogin: Locator;
+export class Login extends AppPage {
+  private inputUsername = this.page.getByRole("textbox", { name: "Username" });
+  private inputPassword = this.page.getByRole("textbox", { name: "Password" });
+  private buttonLogin = this.page.getByRole("button", { name: "Login" });
 
-  constructor(page: Page) {
-    this.page = page;
-    this.inputUsername = page.getByRole("textbox", { name: "Username" });
-    this.inputPassword = page.getByRole("textbox", { name: "Password" });
-    this.buttonLogin = page.getByRole("button", { name: "Login" });
-  }
-
+  @step()
   async navigateToLoginPage(): Promise<void> {
-    await this.page.goto("https://www.saucedemo.com/");
+    await this.page.goto("/");
     await expect(this.page).toHaveURL(/www.saucedemo.com/);
   }
 
+  @step()
   async login(username: string, password: string): Promise<void> {
     await this.inputUsername.fill(username);
     await this.inputPassword.fill(password);
