@@ -12,17 +12,19 @@ export class Cart extends AppPage {
     productName: string,
     priceValue: string
   ): Promise<void> {
-    const price = this.page.locator(
-      `//*[contains(text(), "${productName}")]/ancestor::*[@class="cart_item"]//*[@class="inventory_item_price"]`
-    );
+    const price = this.page
+      .locator("div.cart_item")
+      .filter({ hasText: productName })
+      .locator("div.inventory_item_price");
     await expect(price).toHaveText(priceValue);
   }
 
   @step()
   async removeProduct(productName: string): Promise<void> {
-    const buttonRemove = this.page.locator(
-      `//*[contains(text(), "${productName}")]/ancestor::*[@class="cart_item"]//button[contains(text(), "Remove")]`
-    );
+    const buttonRemove = this.page
+      .locator("div.cart_item")
+      .filter({ hasText: productName })
+      .getByRole("button", { name: "Remove" });
     await buttonRemove.click();
     await expect(buttonRemove).not.toBeVisible();
   }

@@ -28,18 +28,20 @@ export class Inventory extends AppPage {
 
   @step()
   async getItemPrice(productName: string): Promise<string> {
-    const price = this.page.locator(
-      `//*[contains(text(), "${productName}")]/ancestor::*[@class="inventory_item"]//*[contains(@class, "inventory_item_price")]`
-    );
+    const price = this.page
+      .locator("div.inventory_item")
+      .filter({ hasText: productName })
+      .locator(".inventory_item_price");
     const priceText = (await price.textContent()) as string;
     return priceText;
   }
 
   @step()
   async addProductToCart(productName: string): Promise<void> {
-    const buttonAddToCart = this.page.locator(
-      `//*[contains(text(), "${productName}")]/ancestor::*[@class="inventory_item"]//*[contains(text(), "Add to cart")]`
-    );
+    const buttonAddToCart = this.page
+      .locator("div.inventory_item")
+      .filter({ hasText: productName })
+      .getByRole("button", { name: "Add to cart" });
     await buttonAddToCart.click();
   }
 
@@ -74,7 +76,7 @@ export class Inventory extends AppPage {
     const prices: number[] = [];
 
     for (let i = 0; i < count; i++) {
-      const text = await priceLocators.nth(i).textContent(); // e.g. "$9.99"
+      const text = await priceLocators.nth(i).textContent();
       if (text) {
         prices.push(parseFloat(text.replace("$", "")));
       }
