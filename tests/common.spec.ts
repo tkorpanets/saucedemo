@@ -7,7 +7,9 @@ import { baseFixture } from "../fixtures";
 baseFixture.beforeEach("Login", async ({ app }) => {
   const { username, password } = users.standard_user;
   await app.login.navigateToLoginPage();
+  await app.login.url.expectURLToHaveText(/www.saucedemo.com/);
   await app.login.login(username, password);
+  await app.login.url.expectURLToHaveText(/www.saucedemo.com\/inventory.html/);
 });
 
 baseFixture("Login and verify products", async ({ app }) => {
@@ -20,7 +22,7 @@ baseFixture("Add product to cart and check cart", async ({ app }) => {
 
   const price = await app.inventory.getItemPrice("Sauce Labs Backpack");
   await app.inventory.openCart();
-  await app.cart.verifyItemPrice("Sauce Labs Backpack", price);
+  await app.cart.expectItemPrice("Sauce Labs Backpack", price);
 });
 
 baseFixture("Add and remove product from cart", async ({ app }) => {
