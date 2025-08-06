@@ -2,6 +2,8 @@ import { expect } from "@playwright/test";
 import { AppPage } from "../abstractClasses";
 import { step } from "../../misc/step";
 
+type sortOrder = "low to high" | "high to low";
+
 export class Inventory extends AppPage {
   private products = this.page.locator(".inventory_item");
   private shoppingCartBadge = this.page.locator(".shopping_cart_badge");
@@ -83,5 +85,17 @@ export class Inventory extends AppPage {
     }
 
     return prices;
+  }
+
+  @step()
+  async checkSortingByPrice(sortOrder: sortOrder): Promise<void> {
+    let sorted: number[] = [];
+    const prices = await this.getAllProductPrices();
+    if (sortOrder === "low to high") {
+      sorted = [...prices].sort((a, b) => a - b);
+    } else if (sortOrder === "high to low") {
+      sorted = [...prices].sort((a, b) => b - a);
+    }
+    expect(prices).toEqual(sorted);
   }
 }

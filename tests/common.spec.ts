@@ -38,9 +38,7 @@ baseFixture(
   "Products are sorted by price from low to high",
   async ({ app }) => {
     await app.inventory.sortBy("Price (low to high)");
-    const prices = await app.inventory.getAllProductPrices();
-    const sorted = [...prices].sort((a, b) => a - b);
-    expect(prices).toEqual(sorted);
+    await app.inventory.checkSortingByPrice("low to high");
   }
 );
 
@@ -48,8 +46,6 @@ baseFixture(
   "Products are sorted by price from high to low",
   async ({ app }) => {
     await app.inventory.sortBy("Price (high to low)");
-    const prices = await app.inventory.getAllProductPrices();
-    const sorted = [...prices].sort((a, b) => b - a);
-    expect(prices).toEqual(sorted);
+    await app.inventory.checkSortingByPrice("high to low");
   }
 );
