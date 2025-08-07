@@ -1,18 +1,18 @@
-import { Page, Locator, expect } from "@playwright/test";
-import { AppPage } from "../abstractClasses";
-import { step } from "../../misc/step";
-import { URL } from "../../component/url.components";
+import { Page, Locator, expect } from '@playwright/test';
+import { AppPage } from '../abstractClasses';
+import { step } from '../../misc/step';
+import { URL } from '../../component/url.component';
 
 export class Login extends AppPage {
   public url = new URL(this.page);
 
-  private inputUsername = this.page.getByRole("textbox", { name: "Username" });
-  private inputPassword = this.page.getByRole("textbox", { name: "Password" });
-  private buttonLogin = this.page.getByRole("button", { name: "Login" });
+  private inputUsername = this.page.getByRole('textbox', { name: 'Username' });
+  private inputPassword = this.page.getByRole('textbox', { name: 'Password' });
+  private buttonLogin = this.page.getByRole('button', { name: 'Login' });
 
   @step()
   async navigateToLoginPage(): Promise<void> {
-    await this.page.goto("/");
+    await this.page.goto('/');
   }
 
   @step()
