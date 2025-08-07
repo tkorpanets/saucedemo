@@ -9,9 +9,7 @@ export class Cart extends AppPage {
   private buttonRemove = (productName: string) =>
     this.page.locator('div.cart_item').filter({ hasText: productName }).getByRole('button', { name: 'Remove' });
 
-  private buttonContinueShopping = this.page.getByRole('button', {
-    name: 'Continue Shopping',
-  });
+  private buttonContinueShopping = this.page.getByRole('button', { name: 'Continue Shopping' });
 
   @step()
   async expectItemPrice(productName: string, priceValue: string): Promise<void> {
