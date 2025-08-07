@@ -1,6 +1,6 @@
 import users from '../data/users.json';
 
-import { baseFixture } from '../fixtures';
+import { baseFixture, loggedJSONUserFixture } from '../fixtures';
 
 baseFixture('Login', async ({ app }) => {
   const { username, password } = users.standard_user;
@@ -11,6 +11,6 @@ baseFixture('Login', async ({ app }) => {
   await app.header.expectLoaded();
 });
 
-baseFixture('Login and verify products', async ({ app }) => {
+loggedJSONUserFixture('Login and verify products', async ({ app }) => {
   await app.inventory.validateAllProducts();
 });

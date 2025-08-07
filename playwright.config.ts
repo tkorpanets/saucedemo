@@ -16,8 +16,9 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['html'], ['allure-playwright']],
+  reporter: 'html',
   /* To use Allure reporter:
+  reporter: [['html'], ['allure-playwright']],
   npm install -D allure-playwright
   npm install -g allure-commandline
   install Java JDK: https://adoptium.net/

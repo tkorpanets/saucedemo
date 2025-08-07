@@ -1,6 +1,6 @@
-import { baseFixture } from '../fixtures';
+import { loggedJSONUserFixture } from '../fixtures';
 
-baseFixture('Add product to cart and check cart', async ({ app }) => {
+loggedJSONUserFixture('Add product to cart and check cart', async ({ app }) => {
   await app.inventory.addProductToCart('Sauce Labs Backpack');
   await app.header.shoppingCart.verifyShoppingCartBadge('visible', '1');
   const price = await app.inventory.getItemPrice('Sauce Labs Backpack');
@@ -8,7 +8,7 @@ baseFixture('Add product to cart and check cart', async ({ app }) => {
   await app.cart.expectItemPrice('Sauce Labs Backpack', price);
 });
 
-baseFixture('Add and remove product from cart', async ({ app }) => {
+loggedJSONUserFixture('Add and remove product from cart', async ({ app }) => {
   await app.inventory.addProductToCart('Sauce Labs Backpack');
   await app.header.shoppingCart.openCart();
   await app.cart.removeProduct('Sauce Labs Backpack');
