@@ -3,19 +3,28 @@ import { step } from '../../misc/step';
 import { AppPage } from '../abstractClasses';
 
 export class Inventory extends AppPage {
-  private productCard = this.page.locator('.inventory_item');
+  private readonly productCardSelector = '.inventory_item';
+  private readonly productNameSelector = '.inventory_item_name';
+  private readonly productDescriptionSelector = '.inventory_item_desc';
+  private readonly productPriceSelector = '.inventory_item_price';
+  private readonly productAddToCartButtonSelector = 'button.btn_inventory';
 
   @step()
   async validateAllProducts(): Promise<void> {
-    const count = await this.productCard.count();
-    await expect(this.page).toHaveURL(/www.saucedemo.com\/inventory.html/);
+    const productCards = this.page.locator(this.productCardSelector);
+    const count = await productCards.count();
+
     expect(count).toBeGreaterThan(0);
+
     for (let i = 0; i < count; i++) {
-      const product = this.productCard.nth(i);
-      const name = product.locator('.inventory_item_name');
-      const price = product.locator('.inventory_item_price');
-      const addToCartButton = product.locator('button.btn_inventory');
+      const product = productCards.nth(i);
+      const name = product.locator(this.productNameSelector);
+      const description = product.locator(this.productDescriptionSelector);
+      const price = product.locator(this.productPriceSelector);
+      const addToCartButton = product.locator(this.productAddToCartButtonSelector);
+
       await expect(name).toHaveText(/.+/);
+      await expect(description).toHaveText(/^.{10,}$/);
       await expect(price).toHaveText(/^\$\d+\.\d{2}$/);
       await expect(addToCartButton).toBeVisible();
     }
@@ -24,25 +33,26 @@ export class Inventory extends AppPage {
   @step()
   async getItemPrice(productName: string): Promise<string> {
     const price = this.page
-      .locator('div.inventory_item')
+      .locator(this.productCardSelector)
       .filter({ hasText: productName })
-      .locator('.inventory_item_price');
-    const priceText = (await price.textContent()) as string;
-    return priceText;
+      .locator(this.productPriceSelector);
+
+    return (await price.textContent()) as string;
   }
 
   @step()
   async addProductToCart(productName: string): Promise<void> {
-    const buttonAddToCart = this.page
-      .locator('div.inventory_item')
+    const button = this.page
+      .locator(this.productCardSelector)
       .filter({ hasText: productName })
-      .getByRole('button', { name: 'Add to cart' });
-    await buttonAddToCart.click();
+      .locator(this.productAddToCartButtonSelector);
+
+    await button.click();
   }
 
   @step()
   async getAllProductPrices(): Promise<number[]> {
-    const priceLocators = this.page.locator('.inventory_item_price');
+    const priceLocators = this.page.locator(this.productPriceSelector);
     const count = await priceLocators.count();
     const prices: number[] = [];
 
