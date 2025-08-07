@@ -1,7 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { AppPage } from '../abstractClasses';
 import { step } from '../../misc/step';
-import { URL } from '../../component/url.component';
+import { URL } from '../component/url.component';
 
 export class Login extends AppPage {
   public url = new URL(this.page);
