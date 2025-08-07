@@ -1,98 +1,92 @@
-# demo-ghpages-report-secrets
+# 🧪 Playwright + GitHub Pages Report Demo
 
-🧪 **Demonstration project using Playwright + TypeScript** that showcases automated testing with GitHub Actions, secure secrets management, and publishing test reports via GitHub Pages.
-
----
-
-## 🔧 Stack (short with descriptions)
-
-- **Playwright** — end-to-end testing framework
-- **TypeScript** — strongly-typed JavaScript
-- **Page Object Model (POM)** — separation into reusable page and component objects
-- **GitHub Actions** — CI/CD pipeline for running tests
-- **GitHub Secrets** — secure storage of credentials
-- **GitHub Pages** — publishing Playwright HTML report
-- **Fixtures system** — using a shared `baseFixture` that is extended by `app`
-- **Global `app` class** — central access point to all page and component objects
-- **Custom `@step` decorator** — for enhanced reporting (step names shown in Playwright trace logs)
+> ✨ A complete demo showcasing **E2E testing with Playwright**, secret-based login, and **automated HTML reports** via GitHub Pages.
 
 ---
 
-## 🔧 Stack (grouped by domain)
+## 🚀 Project Highlights
 
-**Core Technologies:**
-
-- Playwright
-- TypeScript
-- Page Object Model (POM)
-
-**Architecture & Design:**
-
-- Base Fixture pattern (`baseFixture` → `app`)
-- Global `app` class for centralized access
-- Custom `@step` decorator for logging steps in reports
-
-**CI & DevOps:**
-
-- GitHub Actions (workflow_dispatch, test runner, CI)
-- GitHub Secrets (secure credential injection)
-- GitHub Pages (static hosting for Playwright HTML reports)
+- 🔐 Secure login with **GitHub Secrets**
+- 📊 Live **Playwright test reports** hosted via **GitHub Pages**
+- 🧱 Clean, modular **Page Object Model (POM)**
+- ⚙️ Fully automated CI with **GitHub Actions**
+- 🧪 Elegant step logging with a custom `@step` decorator
+- 📁 Downloadable `.zip` test reports for local review
 
 ---
 
-## 🔧 Stack (compact resume-style)
+## 📦 Tech Stack
 
-Playwright · TypeScript · POM · GitHub Actions · GitHub Secrets · GitHub Pages · baseFixture · app class · @step decorator
-
----
-
-## 🗂 Structure
-
-The project uses a Page Object pattern with clear separation into:
-
-- `pages/` — complete pages (e.g. `loginPage`)
-- `components/` — reusable UI elements (e.g. `alert`, `navbar`)
-- `fixtures/` — contains `baseFixture` extended via `app`
-- `app.ts` — global wrapper that exposes page and component objects
+| Domain          | Stack                                                                                 |
+| --------------- | ------------------------------------------------------------------------------------- |
+| 🔧 Framework    | [Playwright](https://playwright.dev/) + [TypeScript](https://www.typescriptlang.org/) |
+| 🧱 Architecture | Page Object Model, Base Fixture Pattern, Centralized `app` access                     |
+| ⚙️ CI/CD        | GitHub Actions, GitHub Pages, GitHub Secrets                                          |
+| 🧪 Reporting    | Built-in Playwright HTML Report, Step Decorators                                      |
+| 📂 Structure    | Modular pages/components, fixture-based setup                                         |
 
 ---
 
-## 🚀 What this project demonstrates
+## 🧱 Project Structure
 
-1. ✅ **Use of GitHub Actions secrets and variables** to securely store login credentials
-2. ✅ **Automatic generation of HTML test reports using Playwright**
-3. ✅ **Publishing reports through GitHub Pages**  
-   👉 [https://tkorpanets.github.io/demo-ghpages-report-secrets/](https://tkorpanets.github.io/demo-ghpages-report-secrets/)
-4. ✅ **Downloadable `.zip` test report artifact** available in [Actions → Artifacts]
-
----
-
-## 🔐 GitHub Secrets
-
-Secrets used in `.github/workflows/playwright.yml`:
-
-| Name            | Description   |
-| --------------- | ------------- |
-| `STANDARD_USER` | User login    |
-| `SECRET_SAUCE`  | User password |
-
-A `data/users.json` file is generated dynamically from these values before running the tests.
+📁 app/
+├── page/ # Full page objects
+├── component/ # Reusable components
+├── abstractClasses/ # Base AppPage class
+📁 fixtures/ # Custom fixtures: base, logged-in
+📁 data/ # User JSON generated from secrets
+📁 misc/ # Custom @step decorator
+📁 tests/ # Organized test files
 
 ---
 
-## 📦 How to run tests manually
+## 📄 GitHub Actions Overview
 
-Manual test execution is enabled via GitHub Actions:
+🔁 Trigger: **Manually via workflow_dispatch**
 
-- Go to the **Actions** tab
-- Select **Playwright Tests**
-- Click **Run workflow**
+Steps:
+
+1. 🛠 Install dependencies
+2. 🔐 Inject secrets into `data/users.json`
+3. 🧪 Run Playwright tests
+4. 🗃 Upload report as artifact
+5. 🌐 Deploy HTML report to GitHub Pages branch
+
+✅ **View live report:**  
+[🔗 tkorpanets.github.io/demo-ghpages-report-secrets](https://tkorpanets.github.io/demo-ghpages-report-secrets/)
 
 ---
 
-## 📄 Notes
+## 🔐 GitHub Secrets Used
 
-This project is for demonstration and educational purposes only.  
-It is not intended for production use or storing real credentials.
+| Name            | Purpose        |
+| --------------- | -------------- |
+| `STANDARD_USER` | Login username |
+| `SECRET_SAUCE`  | Login password |
+
+> These secrets are injected into `data/users.json` before test execution.
 
 ---
+
+## 🧪 Example Test
+
+```ts
+loggedJSONUserFixture('Products are sorted by price from low to high', async ({ app }) => {
+  await app.header.sort.sortBy('Price (low to high)');
+  await app.inventory.checkSortingByPrice('low to high');
+});
+```
+
+📥 How to Run Tests Manually
+
+1. Go to the Actions tab in GitHub
+2. Select Playwright Tests
+3. Click Run workflow
+
+💡 Notes
+✅ Secrets never stored in repo
+✅ HTML reports are auto-deployed
+✅ Great as a starter for real-world project
+
+📜 License
+MIT © 2025 Taras Korpanets
