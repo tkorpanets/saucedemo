@@ -9,6 +9,7 @@ export class Login extends AppPage {
   private inputUsername = this.page.getByRole('textbox', { name: 'Username' });
   private inputPassword = this.page.getByRole('textbox', { name: 'Password' });
   private buttonLogin = this.page.getByRole('button', { name: 'Login' });
+  private errorMessage = this.page.locator('[data-test="error"]');
 
   @step()
   async navigateToLoginPage(): Promise<void> {
@@ -20,5 +21,10 @@ export class Login extends AppPage {
     await this.inputUsername.fill(username);
     await this.inputPassword.fill(password);
     await this.buttonLogin.click();
+  }
+
+  @step()
+  async expectErrorMessage(errorMessage: string) {
+    await expect(this.errorMessage).toHaveText(errorMessage);
   }
 }

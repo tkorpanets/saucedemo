@@ -1,8 +1,8 @@
 import users from '../data/users.json';
 
-import { baseFixture, loggedJSONUserFixture } from '../fixtures';
+import { baseFixture } from '../fixtures';
 
-baseFixture('Login', async ({ app }) => {
+baseFixture('Login with valid data', async ({ app }) => {
   const { username, password } = users.standard_user;
   await app.login.navigateToLoginPage();
   await app.login.url.expectURLToHaveText(/www.saucedemo.com/);
@@ -11,6 +11,43 @@ baseFixture('Login', async ({ app }) => {
   await app.header.expectLoaded();
 });
 
-loggedJSONUserFixture('Login and verify products', async ({ app }) => {
-  await app.inventory.validateAllProducts();
-});
+const fieldValidationData = [
+  {
+    name: 'Login with empty fields',
+    username: '',
+    password: '',
+    expectedError: 'Epic sadface: Username is required',
+  },
+  {
+    name: 'Login without password',
+    username: users.standard_user.username,
+    password: '',
+    expectedError: 'Epic sadface: Password is required',
+  },
+  {
+    name: 'Login without username',
+    username: '',
+    password: users.standard_user.password,
+    expectedError: 'Epic sadface: Username is required',
+  },
+  {
+    name: 'Login with invalid username',
+    username: 'invalid_user',
+    password: users.standard_user.password,
+    expectedError: 'Epic sadface: Username and password do not match any user in this service',
+  },
+  {
+    name: 'Login with invalid password',
+    username: users.standard_user.username,
+    password: 'wrong_password',
+    expectedError: 'Epic sadface: Username and password do not match any user in this service',
+  },
+];
+
+for (const testData of fieldValidationData) {
+  baseFixture(testData.name, async ({ app }) => {
+    await app.login.navigateToLoginPage();
+    await app.login.login(testData.username, testData.password);
+    await app.login.expectErrorMessage(testData.expectedError);
+  });
+}

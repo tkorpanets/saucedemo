@@ -1,5 +1,9 @@
 import { loggedJSONUserFixture } from '../fixtures';
 
+loggedJSONUserFixture('Login and verify products', async ({ app }) => {
+  await app.inventory.validateAllProducts();
+});
+
 loggedJSONUserFixture('Add product to cart and check cart', async ({ app }) => {
   await app.inventory.addProductToCart('Sauce Labs Backpack');
   await app.header.shoppingCart.verifyShoppingCartBadge('visible', '1');
