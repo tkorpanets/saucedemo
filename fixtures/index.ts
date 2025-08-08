@@ -1,15 +1,17 @@
-import { test } from '@playwright/test';
+//import { test } from '@playwright/test';
+import { test as base } from '@playwright/test';
 import { Application } from '../app';
 import users from '../data/users.json';
 
-export const baseFixture = test.extend<{ app: Application }>({
+export const test = base.extend<{
+  app: Application;
+}>({
   app: async ({ page }, use) => {
-    const app = new Application(page);
-    await use(app);
+    await use(new Application(page));
   },
 });
 
-export const loggedJSONUserFixture = baseFixture.extend<{ app: Application }>({
+export const loggedJSONUserFixture = test.extend<{ app: Application }>({
   app: async ({ app }, use) => {
     const { username, password } = users.standard_user;
     await app.login.navigateToLoginPage();
@@ -19,7 +21,7 @@ export const loggedJSONUserFixture = baseFixture.extend<{ app: Application }>({
   },
 });
 
-export const loggedEnvUserFixture = baseFixture.extend<{ app: Application }>({
+export const loggedEnvUserFixture = test.extend<{ app: Application }>({
   app: async ({ app }, use) => {
     const username = process.env.STANDARD_USER;
     const password = process.env.STANDARD_PASS;

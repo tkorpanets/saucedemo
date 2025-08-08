@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
-import { step } from '../../misc/step';
-import { AppPage } from '../abstractClasses';
+import { step } from '../../utils/step-decorator';
+import { AppPage } from '../base.page';
 
 export class Inventory extends AppPage {
   private readonly productCardSelector = '.inventory_item';
@@ -8,6 +8,12 @@ export class Inventory extends AppPage {
   private readonly productDescriptionSelector = '.inventory_item_desc';
   private readonly productPriceSelector = '.inventory_item_price';
   private readonly productAddToCartButtonSelector = 'button.btn_inventory';
+
+  @step()
+  async expectLoaded(): Promise<void> {
+    const productCount = await this.page.locator(this.productCardSelector).count();
+    expect(productCount).toBeGreaterThan(2);
+  }
 
   @step()
   async validateAllProducts(): Promise<void> {
