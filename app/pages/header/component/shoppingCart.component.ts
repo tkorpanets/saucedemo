@@ -3,8 +3,8 @@ import { step } from '../../../../utils/step-decorator';
 import { AppComponent } from '../../../base.page';
 
 export class ShoppingCart extends AppComponent {
-  private readonly shoppingCartIcon = this.page.locator('.shopping_cart_link');
-  private readonly shoppingCartBadge = this.page.locator('.shopping_cart_badge');
+  private shoppingCartIcon = this.page.locator('.shopping_cart_link');
+  private shoppingCartBadge = this.page.locator('.shopping_cart_badge');
 
   @step()
   async expectLoaded(): Promise<void> {
@@ -12,12 +12,13 @@ export class ShoppingCart extends AppComponent {
   }
 
   @step()
-  async verifyShoppingCartBadge(state: 'visible' | 'notVisible', count?: string): Promise<void> {
-    if (state === 'visible' && count !== undefined) {
-      await expect(this.shoppingCartBadge).toHaveText(count);
-    } else if (state === 'notVisible') {
-      await expect(this.shoppingCartBadge).not.toBeVisible();
-    }
+  async expectBadgeCount(count: string) {
+    await expect(this.shoppingCartBadge).toHaveText(count);
+  }
+
+  @step()
+  async expectNoBadge() {
+    await expect(this.shoppingCartBadge).not.toBeVisible();
   }
 
   @step()

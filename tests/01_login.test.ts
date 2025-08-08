@@ -1,4 +1,4 @@
-import { test } from '../fixtures';
+import { test, loginPageFixture } from '../fixtures';
 import rawUsers from '../data/users.json';
 import type { UsersMap } from '../types/users';
 
@@ -9,23 +9,20 @@ test('Login with valid user', async ({ app }) => {
   await app.login.navigateToLoginPage();
   await app.login.expectLoaded();
   await app.login.login(username, password);
-  await app.login.url.expectURLToHaveText(/www.saucedemo.com/);
+  await app.login.urlComponent.expectURLToHaveText(/www.saucedemo.com/);
   await app.header.expectLoaded();
+  await app.inventory.expectLoaded();
 });
 
-test('Login with locked user', async ({ app }) => {
+loginPageFixture('Login with locked user', async ({ app }) => {
   const { username, password } = users.locked_out_user;
-  await app.login.navigateToLoginPage();
-  await app.login.expectLoaded();
   await app.login.login(username, password);
   await app.login.expectErrorMessage('Epic sadface: Sorry, this user has been locked out.');
   await app.login.closeErrorIfVisible();
 });
 
-test('Login performance glitch user', async ({ app }) => {
+loginPageFixture('Login performance glitch user', async ({ app }) => {
   const { username, password } = users.performance_glitch_user;
-  await app.login.navigateToLoginPage();
-  await app.login.expectLoaded();
   await app.login.login(username, password);
   await app.header.expectLoaded();
 });
@@ -64,22 +61,16 @@ const fieldValidationData = [
 ];
 
 for (const { name, username, password, expectedError } of fieldValidationData) {
-  test(name, async ({ app }) => {
-    await app.login.navigateToLoginPage();
-    await app.login.expectLoaded();
+  loginPageFixture(name, async ({ app }) => {
     await app.login.login(username, password);
     await app.login.expectErrorMessage(expectedError);
   });
 }
 
-test('Check login placeholders', async ({ app }) => {
-  await app.login.navigateToLoginPage();
-  await app.login.expectLoaded();
+loginPageFixture('Check login placeholders', async ({ app }) => {
   await app.login.expectPlaceholders('Username', 'Password');
 });
 
-test('Password field should be hidden', async ({ app }) => {
-  await app.login.navigateToLoginPage();
-  await app.login.expectLoaded();
+loginPageFixture('Password field should be hidden', async ({ app }) => {
   await app.login.expectPasswordHidden();
 });

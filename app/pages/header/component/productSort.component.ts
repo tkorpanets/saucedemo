@@ -3,7 +3,7 @@ import { step } from '../../../../utils/step-decorator';
 import { AppComponent } from '../../../base.page';
 
 export class ProductSort extends AppComponent {
-  private readonly sortDropdown = this.page.locator('select[data-test="product-sort-container"]');
+  private sortDropdown = this.page.locator('select[data-test="product-sort-container"]');
 
   @step()
   async expectLoaded(): Promise<void> {

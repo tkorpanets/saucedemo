@@ -10,7 +10,7 @@ loggedJSONUserFixture('Verify products and inventory page', async ({ app }) => {
 
 loggedJSONUserFixture('Add product to cart and check cart', async ({ app }) => {
   await app.inventory.addProductToCart('Sauce Labs Backpack');
-  await app.header.shoppingCart.verifyShoppingCartBadge('visible', '1');
+  await app.header.shoppingCart.expectBadgeCount('1');
   const price = await app.inventory.getItemPrice('Sauce Labs Backpack');
   await app.header.shoppingCart.openCart();
   await app.cart.expectLoaded();
@@ -22,7 +22,7 @@ loggedJSONUserFixture('Add and remove product from cart', async ({ app }) => {
   await app.header.shoppingCart.openCart();
   await app.cart.expectLoaded();
   await app.cart.removeProduct('Sauce Labs Backpack');
-  await app.header.shoppingCart.verifyShoppingCartBadge('notVisible');
-  await app.cart.clickButtonContinueShopping();
-  await app.header.shoppingCart.verifyShoppingCartBadge('notVisible');
+  await app.header.shoppingCart.expectNoBadge();
+  await app.cart.clickContinueShoppingButton();
+  await app.header.shoppingCart.expectNoBadge();
 });

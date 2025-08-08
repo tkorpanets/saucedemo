@@ -3,14 +3,15 @@ import { step } from '../../utils/step-decorator';
 import { AppPage } from '../base.page';
 
 export class Inventory extends AppPage {
-  private readonly productCardSelector = '.inventory_item';
-  private readonly productNameSelector = '.inventory_item_name';
-  private readonly productDescriptionSelector = '.inventory_item_desc';
-  private readonly productPriceSelector = '.inventory_item_price';
-  private readonly productAddToCartButtonSelector = 'button.btn_inventory';
+  private productCardSelector = '.inventory_item';
+  private productNameSelector = '.inventory_item_name';
+  private productDescriptionSelector = '.inventory_item_desc';
+  private productPriceSelector = '.inventory_item_price';
+  private productAddToCartButtonSelector = 'button.btn_inventory';
 
   @step()
   async expectLoaded(): Promise<void> {
+    await expect(this.page.locator(this.productCardSelector).first()).toBeVisible();
     const productCount = await this.page.locator(this.productCardSelector).count();
     expect(productCount).toBeGreaterThan(2);
   }
@@ -22,18 +23,15 @@ export class Inventory extends AppPage {
 
     expect(count).toBeGreaterThan(0);
 
+    const validations = [];
     for (let i = 0; i < count; i++) {
       const product = productCards.nth(i);
-      const name = product.locator(this.productNameSelector);
-      const description = product.locator(this.productDescriptionSelector);
-      const price = product.locator(this.productPriceSelector);
-      const addToCartButton = product.locator(this.productAddToCartButtonSelector);
-
-      await expect(name).toHaveText(/.+/);
-      await expect(description).toHaveText(/^.{10,}$/);
-      await expect(price).toHaveText(/^\$\d+\.\d{2}$/);
-      await expect(addToCartButton).toBeVisible();
+      validations.push(expect(product.locator(this.productNameSelector)).toHaveText(/.+/));
+      validations.push(expect(product.locator(this.productDescriptionSelector)).toHaveText(/^.{10,}$/));
+      validations.push(expect(product.locator(this.productPriceSelector)).toHaveText(/^\$\d+\.\d{2}$/));
+      validations.push(expect(product.locator(this.productAddToCartButtonSelector)).toBeVisible());
     }
+    await Promise.all(validations);
   }
 
   @step()
@@ -55,6 +53,14 @@ export class Inventory extends AppPage {
 
     await button.click();
   }
+
+  // TODO: Bulk method of adding products
+  // @step()
+  // async addProductsToCart(names: string[]) {
+  //   for (const name of names) {
+  //     await this.addProductToCart(name);
+  //   }
+  // }
 
   @step()
   async getAllProductPrices(): Promise<number[]> {

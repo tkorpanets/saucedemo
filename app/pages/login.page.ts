@@ -1,24 +1,26 @@
 import { expect } from '@playwright/test';
 import { AppPage } from '../base.page';
 import { step } from '../../utils/step-decorator';
-import { URL } from '../components/url.component';
+import { UrlComponent } from '../components/url.component';
 
 export class Login extends AppPage {
-  public url = new URL(this.page);
+  public urlComponent = new UrlComponent(this.page);
 
-  private readonly logo = this.page.locator('.login_logo');
-  private readonly inputUsername = this.page.getByRole('textbox', { name: 'Username' });
-  private readonly inputPassword = this.page.getByRole('textbox', { name: 'Password' });
-  private readonly buttonLogin = this.page.getByRole('button', { name: 'Login' });
-  private readonly errorMessage = this.page.locator('[data-test="error"]');
-  private readonly errorClose = this.page.locator('[data-test="error-button"]');
+  private logo = this.page.locator('.login_logo');
+  private inputUsername = this.page.getByRole('textbox', { name: 'Username' });
+  private inputPassword = this.page.getByRole('textbox', { name: 'Password' });
+  private buttonLogin = this.page.getByRole('button', { name: 'Login' });
+  private errorMessage = this.page.locator('[data-test="error"]');
+  private errorClose = this.page.locator('[data-test="error-button"]');
 
   @step()
-  async expectLoaded(message?: string): Promise<void> {
-    await expect(this.logo).toHaveText('Swag Labs');
-    await expect(this.inputUsername).toBeVisible();
-    await expect(this.inputPassword).toBeVisible();
-    await expect(this.buttonLogin).toBeVisible();
+  async expectLoaded(): Promise<void> {
+    await Promise.all([
+      expect(this.logo).toHaveText('Swag Labs'),
+      expect(this.inputUsername).toBeVisible(),
+      expect(this.inputPassword).toBeVisible(),
+      expect(this.buttonLogin).toBeVisible(),
+    ]);
   }
 
   @step()
