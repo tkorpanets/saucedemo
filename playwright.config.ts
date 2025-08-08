@@ -17,15 +17,6 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
-  /* To use Allure reporter:
-  reporter: [['html'], ['allure-playwright']],
-  npm install -D allure-playwright
-  npm install -g allure-commandline
-  install Java JDK: https://adoptium.net/
-  npx playwright test --reporter=allure-playwright
-  allure generate ./allure-results -o ./allure-report
-  allure open ./allure-report
-  */
   /* Timeout for each test */
   timeout: 30 * 1000, // 30 seconds
   /* Timeout for expect(...) */
@@ -47,6 +38,8 @@ export default defineConfig({
     //   mode: 'retain-on-failure',
     //   size: { width: 640, height: 480 },
     // },
+    testIdAttribute: 'data-test',
+    //
   },
 
   /* Configure projects for major browsers */

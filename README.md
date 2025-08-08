@@ -90,3 +90,5 @@ loggedJSONUserFixture('Products are sorted by price from low to high', async ({ 
 
 📜 License
 MIT © 2025 Taras Korpanets
+
+
