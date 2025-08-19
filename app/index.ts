@@ -6,8 +6,23 @@ import { Header } from './pages/header';
 
 export class Application extends BasePage {
   //Only pages and components extend through page
-  public cart = new Cart(this.page);
-  public header = new Header(this.page);
-  public inventory = new Inventory(this.page);
-  public login = new Login(this.page);
+
+  //Example of eager initialization:
+  // public cart = new Cart(this.page);
+
+  /* Getters provide lazy initialization: 
+   page objects are instantiated only when accessed. */
+
+  get cart() {
+    return new Cart(this.page);
+  }
+  get header() {
+    return new Header(this.page);
+  }
+  get inventory() {
+    return new Inventory(this.page);
+  }
+  get login() {
+    return new Login(this.page);
+  }
 }
