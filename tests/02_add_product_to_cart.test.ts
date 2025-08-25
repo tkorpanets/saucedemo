@@ -1,6 +1,6 @@
-import { loggedJSONUserFixture } from '../fixtures';
+import { loggedJSONUserFixture, loggedEnvUserFixture } from '../fixtures';
 
-loggedJSONUserFixture('Verify products and inventory page', async ({ app: { header, inventory } }) => {
+loggedEnvUserFixture('Verify products and inventory page', async ({ app: { header, inventory } }) => {
   await header.shoppingCart.expectLoaded();
   await header.expectLoaded();
   await header.productSort.expectLoaded();
