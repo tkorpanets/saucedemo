@@ -37,11 +37,12 @@ export class Cart extends AppPage {
   async clickContinueShoppingButton(): Promise<void> {
     await this.continueShoppingButton.click();
   }
-  // TODO:
-  // @step('Getting the number of items in the cart')
-  // async getCartItemCount(): Promise<number> {
-  //   return await this.page.locator('div.cart_item').count();
-  // }
+
+  @step()
+  async expectProductsCount(expectItemCount: number): Promise<void> {
+    const actualItemCount = await this.page.locator('div.cart_item').count();
+    expect(actualItemCount).toBe(expectItemCount);
+  }
 
   // @step('Availability of a specific product')
   // async expectProductInCart(productName: string) {

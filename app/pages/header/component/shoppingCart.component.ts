@@ -12,12 +12,12 @@ export class ShoppingCart extends AppComponent {
   }
 
   @step()
-  async expectBadgeCount(count: string) {
-    await expect(this.shoppingCartBadge).toHaveText(count);
+  async expectBadgeCount(count: number): Promise<void> {
+    await expect(this.shoppingCartBadge).toHaveText(String(count));
   }
 
   @step()
-  async expectNoBadge() {
+  async expectNoBadge(): Promise<void> {
     await expect(this.shoppingCartBadge).not.toBeVisible();
   }
 

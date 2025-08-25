@@ -55,13 +55,12 @@ export class Inventory extends AppPage {
     await button.click();
   }
 
-  // TODO: Bulk method of adding products
-  // @step()
-  // async addProductsToCart(names: string[]) {
-  //   for (const name of names) {
-  //     await this.addProductToCart(name);
-  //   }
-  // }
+  @step()
+  async addProductsToCart(names: string[]) {
+    for (const name of names) {
+      await this.addProductToCart(name);
+    }
+  }
 
   @step()
   async getAllProductPrices(): Promise<number[]> {
