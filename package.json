@@ -19,7 +19,6 @@
     "@eslint/js": "^9.33.0",
     "@playwright/test": "^1.54.1",
     "@types/node": "^24.0.15",
-    "allure-playwright": "^3.3.3",
     "eslint": "^9.33.0",
     "globals": "^16.3.0",
     "jiti": "^2.5.1",
