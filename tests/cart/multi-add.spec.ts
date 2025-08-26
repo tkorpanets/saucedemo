@@ -17,6 +17,7 @@ const addToCartCases = [
 for (const { products } of addToCartCases) {
   loggedJSONUserFixture(
     `Add ${products.length} product(s) to cart and check cart`,
+    { tag: ['@cart'] },
     async ({ app: { inventory, header, cart } }) => {
       await inventory.addProductsToCart(products);
       await header.shoppingCart.expectBadgeCount(products.length);

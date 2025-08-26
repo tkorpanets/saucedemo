@@ -60,7 +60,7 @@ export class Inventory extends AppPage {
   }
 
   @step()
-  async addProductsToCart(names: string[]) {
+  async addProductsToCart(names: readonly string[]) {
     for (const name of names) {
       await this.addProductToCart(name);
     }

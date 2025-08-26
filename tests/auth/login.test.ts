@@ -4,7 +4,7 @@ import type { UsersMap } from '../../types/users';
 
 const users = rawUsers satisfies UsersMap;
 
-test('Login with valid user', async ({ app: { login, header, inventory } }) => {
+test('Login with valid user', { tag: ['@auth', '@smoke'] }, async ({ app: { login, header, inventory } }) => {
   const { username, password } = users.standard_user;
   await login.navigateToLoginPage();
   await login.expectLoaded();
@@ -14,14 +14,14 @@ test('Login with valid user', async ({ app: { login, header, inventory } }) => {
   await inventory.expectLoaded();
 });
 
-loginPageFixture('Login with locked user', async ({ app: { login } }) => {
+loginPageFixture('Login with locked user', { tag: ['@auth'] }, async ({ app: { login } }) => {
   const { username, password } = users.locked_out_user;
   await login.login(username, password);
   await login.expectErrorMessage('Epic sadface: Sorry, this user has been locked out.');
   await login.closeErrorIfVisible();
 });
 
-loginPageFixture('Login performance glitch user', async ({ app: { login, header } }) => {
+loginPageFixture('Login performance glitch user', { tag: ['@auth'] }, async ({ app: { login, header } }) => {
   const { username, password } = users.performance_glitch_user;
   await login.login(username, password);
   await header.expectLoaded();
@@ -61,16 +61,16 @@ const fieldValidationData = [
 ];
 
 for (const { name, username, password, expectedError } of fieldValidationData) {
-  loginPageFixture(name, async ({ app: { login } }) => {
+  loginPageFixture(name, { tag: ['@auth'] }, async ({ app: { login } }) => {
     await login.login(username, password);
     await login.expectErrorMessage(expectedError);
   });
 }
 
-loginPageFixture('Check login placeholders', async ({ app: { login } }) => {
+loginPageFixture('Check login placeholders', { tag: ['@auth', '@ui'] }, async ({ app: { login } }) => {
   await login.expectPlaceholders('Username', 'Password');
 });
 
-loginPageFixture('Password field should be hidden', async ({ app: { login } }) => {
+loginPageFixture('Password field should be hidden', { tag: ['@auth', '@ui'] }, async ({ app: { login } }) => {
   await login.expectPasswordHidden();
 });

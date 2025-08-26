@@ -7,7 +7,13 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:smoke-invert": "playwright test --grep-invert @smoke",
+    "test:auth": "playwright test --grep @auth",
+    "test:cart": "playwright test --grep @cart",
+    "test:inventory": "playwright test --grep @inventory",
+    "test:pdp": "playwright test --grep @pdp"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

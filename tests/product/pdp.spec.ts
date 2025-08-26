@@ -1,7 +1,7 @@
 // import { loggedJSONUserFixture } from '../../fixtures';
 
 // loggedJSONUserFixture(
-//   'Add from PDP and return to inventory',
+//   'Add from PDP and return to inventory', {tag: ['@pdp','@smoke']}
 //   async ({ app: { inventory, header, productDetails } }) => {
 //     await inventory.openProduct('Sauce Labs Backpack');
 //     await productDetails.expectLoaded('Sauce Labs Backpack');
