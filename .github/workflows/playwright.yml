@@ -17,9 +17,19 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install Playwright Chromium only
+        run: npx playwright install --with-deps chromium
 
       - name: Create users.json from secrets
         run: |
@@ -32,7 +42,7 @@ jobs:
           }' > data/users.json
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npx playwright test --reporter=list,html
 
       - name: Upload Playwright report as artifact (.zip)
         if: always()
@@ -45,6 +55,8 @@ jobs:
       - name: Deploy Playwright report to GitHub Pages
         if: always()
         run: |
+          if [ ! -d "playwright-report" ]; then
+            echo "No report folder, skipping deploy"; exit 0; fi
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git fetch
@@ -53,5 +65,5 @@ jobs:
           touch gh-pages/.nojekyll
           cd gh-pages
           git add .
-          git commit -m "deploy: playwright report"
+          git commit -m "deploy: playwright report" || true
           git push --force origin HEAD:gh-pages
