@@ -51,6 +51,16 @@ export class Inventory extends AppPage {
   }
 
   @step()
+  async getItemDescription(productName: string): Promise<string> {
+    const description = this.page
+      .locator(this.productCardSelector)
+      .filter({ hasText: productName })
+      .locator(this.productDescriptionSelector);
+
+    return (await description.textContent()) as string;
+  }
+
+  @step()
   async addProductToCart(productName: string): Promise<void> {
     const button = this.page
       .locator(this.productCardSelector)
