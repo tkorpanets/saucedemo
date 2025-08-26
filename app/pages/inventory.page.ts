@@ -11,6 +11,7 @@ export class Inventory extends AppPage {
   private productAddToCartButtonSelector = 'button.btn_inventory';
 
   private productCardByName = (name: string) => this.page.locator(this.productCardSelector).filter({ hasText: name });
+  private productNameByName = (name: string) => this.productCardByName(name).locator(this.productNameSelector);
   private productButtonByName = (name: string) =>
     this.productCardByName(name).locator(this.productAddToCartButtonSelector);
 
@@ -128,5 +129,10 @@ export class Inventory extends AppPage {
   @step()
   async expectButtonLabel(productName: string, label: 'Add to cart' | 'Remove'): Promise<void> {
     await expect(this.productButtonByName(productName)).toHaveText(label);
+  }
+
+  @step()
+  async openProduct(productName: string) {
+    await this.productNameByName(productName).click();
   }
 }

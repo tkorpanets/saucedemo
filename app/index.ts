@@ -3,6 +3,7 @@ import { Cart } from './pages/cart.page';
 import { Inventory } from './pages/inventory.page';
 import { Login } from './pages/login.page';
 import { Header } from './pages/header';
+import { ProductDetails } from './pages/productDetails.page';
 
 export class Application extends BasePage {
   //Only pages and components extend through page
@@ -24,5 +25,9 @@ export class Application extends BasePage {
   }
   get login() {
     return new Login(this.page);
+  }
+
+  get productDetails() {
+    return new ProductDetails(this.page);
   }
 }

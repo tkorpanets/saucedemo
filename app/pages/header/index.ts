@@ -10,9 +10,15 @@ export class Header extends AppPage {
 
   private appLogo = this.page.locator('.app_logo');
   private title = this.page.locator('.title');
+  private backToProductsButton = this.page.getByTestId('back-to-products');
 
   @step()
   async expectLoaded(): Promise<void> {
     await Promise.all([expect(this.appLogo).toHaveText('Swag Labs'), expect(this.title).toHaveText('Products')]);
+  }
+
+  @step()
+  async backToProducts(): Promise<void> {
+    await this.backToProductsButton.click();
   }
 }
