@@ -1,4 +1,4 @@
-import { loggedJSONUserFixture } from '../../fixtures';
+import { loggedUserFixture } from '../../fixtures';
 
 const addToCartCases = [
   { products: ['Sauce Labs Backpack', 'Sauce Labs Bike Light'] },
@@ -15,7 +15,7 @@ const addToCartCases = [
 ] as const;
 
 for (const { products } of addToCartCases) {
-  loggedJSONUserFixture(
+  loggedUserFixture(
     `Add ${products.length} product(s) to cart and check cart`,
     { tag: ['@cart'] },
     async ({ app: { inventory, header, cart } }) => {

@@ -1,6 +1,6 @@
-import { loggedJSONUserFixture } from '../../fixtures';
+import { loggedUserFixture } from '../../fixtures';
 
-loggedJSONUserFixture(
+loggedUserFixture(
   'Add product to cart and check cart',
   { tag: ['@cart', '@smoke'] },
   async ({ app: { inventory, header, cart } }) => {
@@ -13,7 +13,7 @@ loggedJSONUserFixture(
   }
 );
 
-loggedJSONUserFixture(
+loggedUserFixture(
   'Add and remove product from cart',
   { tag: ['@cart'] },
   async ({ app: { inventory, header, cart } }) => {

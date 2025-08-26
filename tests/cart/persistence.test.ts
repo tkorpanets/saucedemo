@@ -1,6 +1,6 @@
-import { loggedJSONUserFixture } from '../../fixtures';
+import { loggedUserFixture } from '../../fixtures';
 
-loggedJSONUserFixture(
+loggedUserFixture(
   'Cart badge and states persist after reload',
   { tag: ['@cart'] },
   async ({ app: { inventory, header }, page }) => {

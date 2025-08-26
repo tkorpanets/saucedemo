@@ -1,6 +1,6 @@
-import { loggedJSONUserFixture } from '../../fixtures';
+import { loggedUserFixture } from '../../fixtures';
 
-loggedJSONUserFixture(
+loggedUserFixture(
   'Inventory buttons reflect cart changes',
   { tag: '@inventory' },
   async ({ app: { inventory, header, cart } }) => {

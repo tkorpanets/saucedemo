@@ -1,6 +1,6 @@
-import { loggedJSONUserFixture } from '../../fixtures';
+import { loggedUserFixture } from '../../fixtures';
 
-loggedJSONUserFixture(
+loggedUserFixture(
   'Add from PDP and return to inventory',
   { tag: ['@pdp', '@smoke'] },
   async ({ app: { inventory, header, productDetails } }) => {
@@ -15,7 +15,7 @@ loggedJSONUserFixture(
   }
 );
 
-loggedJSONUserFixture(
+loggedUserFixture(
   'Add from PDP and verify product data',
   { tag: ['@pdp'] },
   async ({ app: { inventory, productDetails } }) => {

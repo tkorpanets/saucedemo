@@ -71,7 +71,7 @@ Steps:
 ## 🧪 Example Test
 
 ```ts
-loggedJSONUserFixture('Products are sorted by price from low to high', async ({ app }) => {
+loggedUserFixture('Products are sorted by price from low to high', async ({ app }) => {
   await app.header.sort.sortBy('Price (low to high)');
   await app.inventory.checkSortingByPrice('low to high');
 });
@@ -90,5 +90,3 @@ loggedJSONUserFixture('Products are sorted by price from low to high', async ({ 
 
 📜 License
 MIT © 2025 Taras Korpanets
-
-

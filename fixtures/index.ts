@@ -18,7 +18,7 @@ export const loginPageFixture = test.extend<AppFixture>({
   },
 });
 
-export const loggedJSONUserFixture = loginPageFixture.extend<AppFixture>({
+export const loggedUserFixture = loginPageFixture.extend<AppFixture>({
   app: async ({ app }, use) => {
     const { username, password } = users.standard_user;
     await app.login.login(username, password);

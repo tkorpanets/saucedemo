@@ -1,4 +1,4 @@
-import { loggedJSONUserFixture } from '../../fixtures';
+import { loggedUserFixture } from '../../fixtures';
 import { SortByValue } from '../../types/sorting';
 
 const cases: Array<{ title: string; sortByValue: SortByValue }> = [
@@ -9,7 +9,7 @@ const cases: Array<{ title: string; sortByValue: SortByValue }> = [
 ];
 
 for (const { title, sortByValue } of cases) {
-  loggedJSONUserFixture(title, { tag: '@inventory' }, async ({ app: { header, inventory } }) => {
+  loggedUserFixture(title, { tag: '@inventory' }, async ({ app: { header, inventory } }) => {
     await header.productSort.sortBy(sortByValue);
     await inventory.checkSortingBy(sortByValue);
   });

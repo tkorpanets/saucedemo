@@ -1,6 +1,6 @@
-import { loggedJSONUserFixture } from '../../fixtures';
+import { loggedUserFixture } from '../../fixtures';
 
-loggedJSONUserFixture('Empty cart UI states', { tag: ['@cart'] }, async ({ app: { header, cart } }) => {
+loggedUserFixture('Empty cart UI states', { tag: ['@cart'] }, async ({ app: { header, cart } }) => {
   await header.shoppingCart.openCart();
   await cart.expectLoaded();
   await cart.expectNoItems();
