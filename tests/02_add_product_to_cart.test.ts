@@ -55,3 +55,31 @@ for (const { products } of addToCartCases) {
     }
   );
 }
+
+loggedJSONUserFixture('Inventory buttons reflect cart changes', async ({ app: { inventory, header, cart } }) => {
+  await inventory.addProductsToCart(['Sauce Labs Backpack', 'Sauce Labs Bike Light']);
+  await header.shoppingCart.expectBadgeCount(2);
+  await header.shoppingCart.openCart();
+  await cart.expectLoaded();
+  await cart.removeProduct('Sauce Labs Bike Light');
+  await header.shoppingCart.expectBadgeCount(1);
+  await cart.clickContinueShoppingButton();
+  await inventory.expectLoaded();
+  await inventory.expectButtonLabel('Sauce Labs Backpack', 'Remove');
+  await inventory.expectButtonLabel('Sauce Labs Bike Light', 'Add to cart');
+});
+
+loggedJSONUserFixture('Cart badge and states persist after reload', async ({ app: { inventory, header }, page }) => {
+  await inventory.addProductsToCart(['Sauce Labs Backpack', 'Sauce Labs Fleece Jacket']);
+  await header.shoppingCart.expectBadgeCount(2);
+  await page.reload();
+  await header.shoppingCart.expectBadgeCount(2);
+  await inventory.expectButtonLabel('Sauce Labs Backpack', 'Remove');
+  await inventory.expectButtonLabel('Sauce Labs Fleece Jacket', 'Remove');
+});
+
+loggedJSONUserFixture('Empty cart UI states', async ({ app: { header, cart } }) => {
+  await header.shoppingCart.openCart();
+  await cart.expectLoaded();
+  await cart.expectNoItems();
+});

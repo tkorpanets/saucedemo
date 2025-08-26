@@ -7,6 +7,7 @@ export class Cart extends AppPage {
   private cartDescLabel = this.page.getByTestId('cart-desc-label');
   private continueShoppingButton = this.page.getByTestId('continue-shopping');
   private checkoutButton = this.page.getByTestId('checkout');
+  private cartItems = this.page.locator('div.cart_item');
 
   private productCard = (productName: string) => this.page.locator('div.cart_item').filter({ hasText: productName });
   private price = (productName: string) => this.productCard(productName).locator('div.inventory_item_price');
@@ -42,6 +43,11 @@ export class Cart extends AppPage {
   async expectProductsCount(expectItemCount: number): Promise<void> {
     const actualItemCount = await this.page.locator('div.cart_item').count();
     expect(actualItemCount).toBe(expectItemCount);
+  }
+
+  @step()
+  async expectNoItems(): Promise<void> {
+    expect(await this.cartItems.count()).toBe(0);
   }
 
   // @step('Availability of a specific product')

@@ -10,6 +10,10 @@ export class Inventory extends AppPage {
   private productPriceSelector = '.inventory_item_price';
   private productAddToCartButtonSelector = 'button.btn_inventory';
 
+  private productCardByName = (name: string) => this.page.locator(this.productCardSelector).filter({ hasText: name });
+  private productButtonByName = (name: string) =>
+    this.productCardByName(name).locator(this.productAddToCartButtonSelector);
+
   @step()
   async expectLoaded(): Promise<void> {
     await expect(this.page.locator(this.productCardSelector).first()).toBeVisible();
@@ -119,5 +123,10 @@ export class Inventory extends AppPage {
       return this.checkSortingByName(sortByValue as NameSort);
     }
     throw new Error(`Unknown sortByValue: ${sortByValue}`);
+  }
+
+  @step()
+  async expectButtonLabel(productName: string, label: 'Add to cart' | 'Remove'): Promise<void> {
+    await expect(this.productButtonByName(productName)).toHaveText(label);
   }
 }
