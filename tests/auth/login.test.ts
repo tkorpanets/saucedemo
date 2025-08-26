@@ -1,6 +1,6 @@
-import { test, loginPageFixture } from '../fixtures';
-import rawUsers from '../data/users.json';
-import type { UsersMap } from '../types/users';
+import { test, loginPageFixture } from '../../fixtures';
+import rawUsers from '../../data/users.json';
+import type { UsersMap } from '../../types/users';
 
 const users = rawUsers satisfies UsersMap;
 
