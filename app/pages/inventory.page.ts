@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { step } from '../utils/step-decorator';
 import { AppPage } from '../base.page';
-import { PriceSort, NameSort, SortByValue } from '../../types/sorting';
+import { PriceSort, NameSort, SortByValue } from '../types/sorting';
 
 export class Inventory extends AppPage {
   private productCardSelector = '.inventory_item';
