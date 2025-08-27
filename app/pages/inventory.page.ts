@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { step } from '../../utils/step-decorator';
+import { step } from '../utils/step-decorator';
 import { AppPage } from '../base.page';
 import { PriceSort, NameSort, SortByValue } from '../../types/sorting';
 

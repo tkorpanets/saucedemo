@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
-import { step } from '../../../../utils/step-decorator';
+import { step } from '../../../utils/step-decorator';
 import { AppComponent } from '../../../base.page';
-import { SortByValue } from '../../../../types/sorting';
+import { SortByValue } from '../../../types/sorting';
 
 export class ProductSort extends AppComponent {
   private sortDropdown = this.page.locator('select[data-test="product-sort-container"]');

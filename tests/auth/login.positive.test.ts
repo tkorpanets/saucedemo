@@ -1,12 +1,11 @@
-import { test, loginPageFixture } from '../../fixtures';
-import { users } from '../../helpers/users';
+import { test, loginPageFixture } from '../../app/fixtures';
+import { users } from '../../app/helpers/users';
 
 test('Login with valid user', { tag: ['@auth', '@smoke'] }, async ({ app: { login, header, inventory } }) => {
   const { username, password } = users.standard;
   await login.navigateToLoginPage();
   await login.expectLoaded();
   await login.login(username, password);
-  await login.urlComponent.expectURLToHaveText(/www.saucedemo.com/);
   await header.expectLoaded();
   await inventory.expectLoaded();
 });

@@ -1,4 +1,4 @@
-import { loggedUserFixture } from '../../fixtures';
+import { loggedUserFixture } from '../../app/fixtures';
 
 const addToCartCases = [
   { products: ['Sauce Labs Backpack', 'Sauce Labs Bike Light'] },

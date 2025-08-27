@@ -1,4 +1,4 @@
-import { loggedUserFixture } from '../../fixtures';
+import { loggedUserFixture } from '../../app/fixtures';
 
 loggedUserFixture(
   'Inventory buttons reflect cart changes',

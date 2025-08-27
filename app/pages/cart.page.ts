@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { AppPage } from '../base.page';
-import { step } from '../../utils/step-decorator';
+import { step } from '../utils/step-decorator';
 
 export class Cart extends AppPage {
   private cartQuantityLabel = this.page.getByTestId('cart-quantity-label');

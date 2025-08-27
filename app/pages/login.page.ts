@@ -1,11 +1,8 @@
 import { expect } from '@playwright/test';
 import { AppPage } from '../base.page';
-import { step } from '../../utils/step-decorator';
-import { UrlComponent } from '../components/url.component';
+import { step } from '../utils/step-decorator';
 
 export class Login extends AppPage {
-  public urlComponent = new UrlComponent(this.page);
-
   private logo = this.page.locator('.login_logo');
   private inputUsername = this.page.getByRole('textbox', { name: 'Username' });
   private inputPassword = this.page.getByRole('textbox', { name: 'Password' });

@@ -1,5 +1,5 @@
-import { loginPageFixture } from '../../fixtures';
-import { users } from '../../helpers/users';
+import { loginPageFixture } from '../../app/fixtures';
+import { users } from '../../app/helpers/users';
 
 loginPageFixture('Login with locked user', { tag: ['@auth'] }, async ({ app: { login } }) => {
   const { username, password } = users.locked;

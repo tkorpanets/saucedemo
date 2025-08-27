@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { step } from '../../../../utils/step-decorator';
+import { step } from '../../../utils/step-decorator';
 import { AppComponent } from '../../../base.page';
 
 export class ShoppingCart extends AppComponent {

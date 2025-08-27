@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 const target = process.env.ENV_TARGET || 'dev';
 if (!process.env.BASE_URL) {
-  dotenv.config({ path: path.resolve(__dirname, `.env.${target}`) });
+  dotenv.config({ path: path.resolve(__dirname, 'config', `.env.${target}`) });
 }
 if (!process.env.BASE_URL) {
   throw new Error('BASE_URL is not defined. Set it via .env.<target> locally or secrets in CI.');
