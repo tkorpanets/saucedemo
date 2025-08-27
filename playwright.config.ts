@@ -1,8 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
-/* Load environment variables from .env file */
-import dotenv from 'dotenv';
-import path from 'path';
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+import * as dotenv from 'dotenv';
+import * as path from 'path';
+const target = process.env.ENV_TARGET || 'dev';
+if (!process.env.BASE_URL) {
+  dotenv.config({ path: path.resolve(__dirname, `.env.${target}`) });
+}
+if (!process.env.BASE_URL) {
+  throw new Error('BASE_URL is not defined. Set it via .env.<target> locally or secrets in CI.');
+}
 
 export default defineConfig({
   testDir: './tests',
@@ -26,7 +32,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'https://www.saucedemo.com/',
+    baseURL: process.env.BASE_URL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     //headless: true,

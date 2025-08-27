@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test';
 import { Application } from '../app';
-import users from '../data/users.json';
+import { users } from '../helpers/users';
 
 type AppFixture = { app: Application };
 
@@ -20,20 +20,7 @@ export const loginPageFixture = test.extend<AppFixture>({
 
 export const loggedUserFixture = loginPageFixture.extend<AppFixture>({
   app: async ({ app }, use) => {
-    const { username, password } = users.standard_user;
-    await app.login.login(username, password);
-    await app.header.expectLoaded();
-    await use(app);
-  },
-});
-
-export const loggedEnvUserFixture = loginPageFixture.extend<AppFixture>({
-  app: async ({ app }, use) => {
-    const username = process.env.STANDARD_USER;
-    const password = process.env.STANDARD_PASS;
-    if (!username || !password) {
-      throw new Error('Environment variables STANDARD_USER and STANDARD_PASS must be set');
-    }
+    const { username, password } = users.standard;
     await app.login.login(username, password);
     await app.header.expectLoaded();
     await use(app);

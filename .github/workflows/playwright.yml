@@ -2,11 +2,30 @@ name: Playwright Tests
 
 on:
   workflow_dispatch:
+    inputs:
+      target:
+        description: 'Choose environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options: [dev, stage]
 
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+
+    environment: ${{ github.event.inputs.target }}
+
+    env:
+      ENV_TARGET: ${{ github.event.inputs.target }}
+      BASE_URL: ${{ secrets.BASE_URL }}
+      STANDARD_USER: ${{ secrets.STANDARD_USER }}
+      STANDARD_PASS: ${{ secrets.STANDARD_PASS }}
+      LOCKED_USER: ${{ secrets.LOCKED_USER }}
+      LOCKED_PASS: ${{ secrets.LOCKED_PASS }}
+      PERF_USER: ${{ secrets.PERF_USER }}
+      PERF_PASS: ${{ secrets.PERF_PASS }}
 
     steps:
       - uses: actions/checkout@v3
@@ -30,37 +49,6 @@ jobs:
 
       - name: Install Playwright Chromium only
         run: npx playwright install --with-deps chromium
-
-      - name: Create .env from secrets
-        run: |
-          cat > .env <<EOF
-          STANDARD_USER=${{ secrets.SAUCE_STANDARD_USERNAME }}
-          STANDARD_PASS=${{ secrets.SAUCE_STANDARD_PASSWORD }}
-          LOCKED_USER=${{ secrets.SAUCE_LOCKED_USERNAME }}
-          LOCKED_PASS=${{ secrets.SAUCE_LOCKED_PASSWORD }}
-          PERF_USER=${{ secrets.SAUCE_PERF_USERNAME }}
-          PERF_PASS=${{ secrets.SAUCE_PERF_PASSWORD }}
-          EOF
-
-      - name: Create users.json from secrets
-        run: |
-          mkdir -p data
-          cat > data/users.json <<'JSON'
-          {
-            "standard_user": {
-              "username": "${{ secrets.SAUCE_STANDARD_USERNAME }}",
-              "password": "${{ secrets.SAUCE_STANDARD_PASSWORD }}"
-            },
-            "locked_out_user": {
-              "username": "${{ secrets.SAUCE_LOCKED_USERNAME }}",
-              "password": "${{ secrets.SAUCE_LOCKED_PASSWORD }}"
-            },
-            "performance_glitch_user": {
-              "username": "${{ secrets.SAUCE_PERF_USERNAME }}",
-              "password": "${{ secrets.SAUCE_PERF_PASSWORD }}"
-            }
-          }
-          JSON
 
       - name: Run Playwright tests
         run: npx playwright test --reporter=list,html

@@ -1,4 +1,4 @@
-import { loggedUserFixture, loggedEnvUserFixture } from '../../fixtures';
+import { loggedUserFixture } from '../../fixtures';
 
 loggedUserFixture(
   'Inventory buttons reflect cart changes',
@@ -17,7 +17,7 @@ loggedUserFixture(
   }
 );
 
-loggedEnvUserFixture(
+loggedUserFixture(
   'Verify products and inventory page',
   { tag: ['@inventory', '@smoke'] },
   async ({ app: { header, inventory } }) => {

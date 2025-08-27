@@ -6,7 +6,8 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /data/users.json
-.env
+.env.dev
+.env.stage
 # VS Code
 .vscode
 # Allure
