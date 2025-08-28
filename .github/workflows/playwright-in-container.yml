@@ -51,6 +51,12 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
+      - name: Mark workspace as safe for Git (container)
+        if: always()
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE/gh-pages"
+
       - name: Deploy Playwright report to GitHub Pages
         if: always()
         run: |
