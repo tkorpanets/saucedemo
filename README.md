@@ -83,6 +83,16 @@ loggedUserFixture('Products are sorted by price from low to high', async ({ app 
 2. Select Playwright Tests
 3. Click Run workflow
 
+🐳 Dockerized CI
+
+This project runs Playwright tests in two ways with GitHub Actions. One workflow uses the official Playwright container with browsers preinstalled for fast and simple CI. The other builds a custom Docker image from the provided Dockerfile, giving a production-like setup and the same environment locally and in CI.
+
+Both workflows read environment variables and secrets such as BASE_URL and STANDARD_USER, run the tests, generate an HTML report, upload it as an artifact, and deploy it to GitHub Pages (gh-pages).
+
+Files used: .github/workflows/playwright-in-container.yml, .github/workflows/playwright-dockerfile.yml, and Dockerfile (based on mcr.microsoft.com/playwright:vX.YY.Z-noble).
+
+You can also run the same process locally by building the image and running it with ENV_TARGET and BASE_URL, mounting the playwright-report folder to access the generated HTML report.
+
 💡 Notes
 ✅ Secrets never stored in repo
 ✅ HTML reports are auto-deployed
