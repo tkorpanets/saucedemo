@@ -20,3 +20,8 @@ To enable Allure reporting, install dependencies:
 Allure requires Java — install JDK from https://adoptium.net/.  
 In `playwright.config.ts` set `reporter: [['html'], ['allure-playwright']]`.  
 Run tests with `npx playwright test --reporter=allure-playwright`, then generate the report with `allure generate ./allure-results -o ./allure-report` and open it using `allure open ./allure-report`.
+
+## Run with Docker locally
+
+docker build -t demo-pw-e2e .
+docker run --rm --shm-size=1g -e CI=true -v "$PWD/playwright-report:/app/playwright-report" demo-pw-e2e

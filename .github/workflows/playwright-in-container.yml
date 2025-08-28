@@ -1,0 +1,68 @@
+name: Playwright Tests (in official container)
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Choose environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options: [dev, stage]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    container: mcr.microsoft.com/playwright:v1.55.0-noble
+
+    environment: ${{ github.event.inputs.target }}
+
+    env:
+      ENV_TARGET: ${{ github.event.inputs.target }}
+      BASE_URL: ${{ secrets.BASE_URL }}
+      STANDARD_USER: ${{ secrets.STANDARD_USER }}
+      STANDARD_PASS: ${{ secrets.STANDARD_PASS }}
+      LOCKED_USER: ${{ secrets.LOCKED_USER }}
+      LOCKED_PASS: ${{ secrets.LOCKED_PASS }}
+      PERF_USER: ${{ secrets.PERF_USER }}
+      PERF_PASS: ${{ secrets.PERF_PASS }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+
+      - name: Ensure browsers & deps
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: npx playwright test --reporter=list,html
+
+      - name: Upload Playwright report as artifact (.zip)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Deploy Playwright report to GitHub Pages
+        if: always()
+        run: |
+          if [ ! -d "playwright-report" ]; then
+            echo "No report folder, skipping deploy"; exit 0; fi
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git fetch
+          git worktree add gh-pages
+          cp -r playwright-report/* gh-pages/
+          touch gh-pages/.nojekyll
+          cd gh-pages
+          git add .
+          git commit -m "deploy: playwright report" || true
+          git push --force origin HEAD:gh-pages
