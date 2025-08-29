@@ -4,6 +4,7 @@ import { Inventory } from './pages/inventory.page';
 import { Login } from './pages/login.page';
 import { Header } from './pages/header';
 import { ProductDetails } from './pages/productDetails.page';
+import { YourInformation } from './pages/checkout/yourInformation.page';
 
 export class Application extends BasePage {
   //Only pages and components extend through page
@@ -29,5 +30,9 @@ export class Application extends BasePage {
 
   get productDetails() {
     return new ProductDetails(this.page);
+  }
+
+  get yourInformation() {
+    return new YourInformation(this.page);
   }
 }

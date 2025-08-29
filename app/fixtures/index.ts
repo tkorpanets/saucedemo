@@ -26,3 +26,13 @@ export const loggedUserFixture = loginPageFixture.extend<AppFixture>({
     await use(app);
   },
 });
+
+export const loggedUserWithCartFixture = loggedUserFixture.extend<AppFixture>({
+  app: async ({ app }, use) => {
+    await app.inventory.addProductToCart('Sauce Labs Backpack');
+    await app.header.shoppingCart.openCart();
+    await app.cart.expectLoaded();
+    await app.cart.clickCheckoutButton();
+    await use(app);
+  },
+});

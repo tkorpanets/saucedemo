@@ -40,6 +40,11 @@ export class Cart extends AppPage {
   }
 
   @step()
+  async clickCheckoutButton(): Promise<void> {
+    await this.checkoutButton.click();
+  }
+
+  @step()
   async expectProductsCount(expectItemCount: number): Promise<void> {
     const actualItemCount = await this.page.locator('div.cart_item').count();
     expect(actualItemCount).toBe(expectItemCount);
