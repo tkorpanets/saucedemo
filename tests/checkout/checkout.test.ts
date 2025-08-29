@@ -2,13 +2,17 @@ import { faker } from '@faker-js/faker';
 import { loggedUserWithCartFixture } from '../../app/fixtures';
 
 loggedUserWithCartFixture(
-  'Submit Your Information with valid faker data',
-  { tag: ['@checkout'] },
-  async ({ app: { yourInformation } }) => {
+  'Submit Your Information with valid data and finish order',
+  { tag: ['@checkout', '@smoke'] },
+  async ({ app: { yourInformation, overview, complete, inventory } }) => {
     await yourInformation.expectLoaded();
     await yourInformation.fillForm();
     await yourInformation.submitForm();
-    //next_page.expectLoaded();
+    await overview.expectLoaded();
+    await overview.clickFinishButton();
+    await complete.expectLoaded();
+    await complete.backToHome();
+    await inventory.expectLoaded();
   }
 );
 

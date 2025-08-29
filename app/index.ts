@@ -5,6 +5,8 @@ import { Login } from './pages/login.page';
 import { Header } from './pages/header';
 import { ProductDetails } from './pages/productDetails.page';
 import { YourInformation } from './pages/checkout/yourInformation.page';
+import { Overview } from './pages/checkout/overview.page';
+import { Complete } from './pages/checkout/complete.page';
 
 export class Application extends BasePage {
   //Only pages and components extend through page
@@ -34,5 +36,13 @@ export class Application extends BasePage {
 
   get yourInformation() {
     return new YourInformation(this.page);
+  }
+
+  get overview() {
+    return new Overview(this.page);
+  }
+
+  get complete() {
+    return new Complete(this.page);
   }
 }
