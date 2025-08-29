@@ -1,18 +1,43 @@
 import { faker } from '@faker-js/faker';
-import { loggedUserWithCartFixture } from '../../app/fixtures';
+import { checkoutFixture } from '../../app/fixtures';
 
-loggedUserWithCartFixture(
-  'Submit Your Information with valid data and finish order',
-  { tag: ['@checkout', '@smoke'] },
-  async ({ app: { yourInformation, overview, complete, inventory } }) => {
+checkoutFixture.describe('Custom cart: all products', () => {
+  checkoutFixture.use({
+    cartOptions: {
+      products: [
+        'Sauce Labs Backpack',
+        'Sauce Labs Bike Light',
+        'Sauce Labs Bolt T-Shirt',
+        'Sauce Labs Fleece Jacket',
+        'Sauce Labs Onesie',
+        'Test.allTheThings() T-Shirt (Red)',
+      ],
+    },
+  });
+  checkoutFixture(
+    'Submit order with Backpack and Bike',
+    { tag: ['@checkout'] },
+    async ({ app: { yourInformation, overview, header } }) => {
+      await yourInformation.expectLoaded();
+      await yourInformation.fillForm();
+      await yourInformation.submitForm();
+      await overview.expectLoaded();
+      await header.shoppingCart.expectBadgeCount(6);
+    }
+  );
+});
+
+checkoutFixture(
+  'Submit order with Backpack and Bike',
+  { tag: ['@checkout'] },
+  async ({ app: { yourInformation, overview, complete, header } }) => {
     await yourInformation.expectLoaded();
     await yourInformation.fillForm();
     await yourInformation.submitForm();
     await overview.expectLoaded();
+    await header.shoppingCart.expectBadgeCount(1);
     await overview.clickFinishButton();
     await complete.expectLoaded();
-    await complete.backToHome();
-    await inventory.expectLoaded();
   }
 );
 
@@ -46,7 +71,7 @@ const infoValidationData: ReadonlyArray<{
 ] as const;
 
 for (const { name, data, expectedError } of infoValidationData) {
-  loggedUserWithCartFixture(name, { tag: ['@checkout'] }, async ({ app: { yourInformation } }) => {
+  checkoutFixture(name, { tag: ['@checkout'] }, async ({ app: { yourInformation } }) => {
     await yourInformation.expectLoaded();
     await yourInformation.closeErrorIfVisible();
     await yourInformation.fillForm(data);
@@ -55,19 +80,15 @@ for (const { name, data, expectedError } of infoValidationData) {
   });
 }
 
-loggedUserWithCartFixture(
-  'Check Your Information placeholders',
-  { tag: ['@checkout'] },
-  async ({ app: { yourInformation } }) => {
-    await yourInformation.expectLoaded();
-    await yourInformation.expectPlaceholders('First Name', 'Last Name', 'Zip/Postal Code');
-  }
-);
+checkoutFixture('Check Your Information placeholders', { tag: ['@checkout'] }, async ({ app: { yourInformation } }) => {
+  await yourInformation.expectLoaded();
+  await yourInformation.expectPlaceholders('First Name', 'Last Name', 'Zip/Postal Code');
+});
 
 const cancelData = [{ name: 'Cancel from empty form' }, { name: 'Cancel after filling form with faker data' }];
 
 for (const { name } of cancelData) {
-  loggedUserWithCartFixture(name, { tag: ['@checkout'] }, async ({ app: { yourInformation, cart } }) => {
+  checkoutFixture(name, { tag: ['@checkout'] }, async ({ app: { yourInformation, cart } }) => {
     await yourInformation.expectLoaded();
     if (name.includes('faker')) {
       await yourInformation.fillForm();

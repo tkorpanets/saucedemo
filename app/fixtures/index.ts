@@ -27,9 +27,16 @@ export const loggedUserFixture = loginPageFixture.extend<AppFixture>({
   },
 });
 
-export const loggedUserWithCartFixture = loggedUserFixture.extend<AppFixture>({
-  app: async ({ app }, use) => {
-    await app.inventory.addProductToCart('Sauce Labs Backpack');
+type CartOptions = {
+  products: string[];
+};
+
+export const checkoutFixture = loggedUserFixture.extend<AppFixture & { cartOptions: CartOptions }>({
+  cartOptions: [{ products: ['Sauce Labs Backpack'] }, { option: true }],
+  app: async ({ app, cartOptions }, use) => {
+    if (cartOptions.products?.length) {
+      await app.inventory.addProductsToCart(cartOptions.products);
+    }
     await app.header.shoppingCart.openCart();
     await app.cart.expectLoaded();
     await app.cart.clickCheckoutButton();
