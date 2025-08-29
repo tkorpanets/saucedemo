@@ -15,7 +15,7 @@ checkoutFixture.describe('Custom cart: all products', () => {
     },
   });
   checkoutFixture(
-    'Submit order with Backpack and Bike',
+    'Submit order with all products',
     { tag: ['@checkout'] },
     async ({ app: { yourInformation, overview, header } }) => {
       await yourInformation.expectLoaded();
