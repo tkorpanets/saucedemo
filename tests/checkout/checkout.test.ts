@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { checkoutFixture } from '../../app/fixtures';
+import { checkoutFixture, loggedUserFixture } from '../../app/fixtures';
 
 checkoutFixture.describe('Custom cart: all products', () => {
   checkoutFixture.use({
@@ -97,3 +97,31 @@ for (const { name } of cancelData) {
     await cart.expectLoaded();
   });
 }
+
+const items = ['Sauce Labs Backpack', 'Sauce Labs Bike Light', 'Sauce Labs Bolt T-Shirt', 'Sauce Labs Fleece Jacket'];
+
+loggedUserFixture(
+  'Adding several products to the cart and checking the amount',
+  { tag: ['@checkout'] },
+  async ({ app: { inventory, header, cart, yourInformation, overview } }) => {
+    await inventory.addProductsToCart(items);
+    const expectedItemTotal = await inventory.sumItemPrices(items);
+    await header.shoppingCart.openCart();
+    await cart.expectLoaded();
+    await cart.clickCheckoutButton();
+    await yourInformation.fillForm();
+    await yourInformation.submitForm();
+    await overview.expectedPaymentInfo('Payment Information:', 'SauceCard #');
+    await overview.expectedShippingInfo('Shipping Information:', 'Free Pony Express Delivery!');
+    await overview.expectPriceTotal({
+      itemTotal: expectedItemTotal,
+      taxRate: 0.08,
+      labels: {
+        priceTotal: 'Price Total',
+        itemTotal: 'Item total:',
+        tax: 'Tax:',
+        total: 'Total:',
+      },
+    });
+  }
+);

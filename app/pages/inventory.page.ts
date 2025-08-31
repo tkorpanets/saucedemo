@@ -145,4 +145,27 @@ export class Inventory extends AppPage {
   async openProduct(productName: string) {
     await this.productNameByName(productName).click();
   }
+
+  parsePrice(priceText: string): number {
+    const n = Number(priceText.replace(/[^0-9.]/g, ''));
+    if (Number.isNaN(n)) {
+      throw new Error(`Cannot parse price from: "${priceText}"`);
+    }
+    return n;
+  }
+
+  async getPriceNumberByName(name: string): Promise<number> {
+    const priceText = await this.productCardByName(name).locator(this.productPriceSelector).textContent();
+    if (!priceText) {
+      throw new Error(`Price not found for product "${name}"`);
+    }
+    return this.parsePrice(priceText);
+  }
+
+  @step()
+  async sumItemPrices(names: readonly string[]): Promise<number> {
+    const prices = await Promise.all(names.map((n) => this.getPriceNumberByName(n)));
+    const total = prices.reduce((acc, v) => acc + v, 0);
+    return Math.round(total * 100) / 100;
+  }
 }
