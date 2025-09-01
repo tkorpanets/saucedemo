@@ -27,18 +27,18 @@ checkoutFixture.describe('Submit order', () => {
       await complete.expectLoaded();
     }
   );
-
-  checkoutFixture(
-    'Submit order with Backpack and Bike',
-    { tag: ['@checkout'] },
-    async ({ app: { yourInformation, overview, complete, header } }) => {
-      await yourInformation.expectLoaded();
-      await yourInformation.fillForm();
-      await yourInformation.submitForm();
-      await overview.expectLoaded();
-      await header.shoppingCart.expectBadgeCount(1);
-      await overview.clickFinishButton();
-      await complete.expectLoaded();
-    }
-  );
 });
+
+checkoutFixture(
+  'Submit order with "Sauce Labs Backpack" (default products)',
+  { tag: ['@checkout'] },
+  async ({ app: { yourInformation, overview, complete, header } }) => {
+    await yourInformation.expectLoaded();
+    await yourInformation.fillForm();
+    await yourInformation.submitForm();
+    await overview.expectLoaded();
+    await header.shoppingCart.expectBadgeCount(1);
+    await overview.clickFinishButton();
+    await complete.expectLoaded();
+  }
+);
