@@ -20,7 +20,7 @@ loggedUserFixture(
     await inventory.addProductToCart('Sauce Labs Backpack');
     await header.shoppingCart.openCart();
     await cart.expectLoaded();
-    await cart.removeProduct('Sauce Labs Backpack');
+    await cart.removeProducts(['Sauce Labs Backpack']);
     await header.shoppingCart.expectNoBadge();
     await cart.clickContinueShoppingButton();
     await header.shoppingCart.expectNoBadge();

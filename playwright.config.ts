@@ -11,7 +11,7 @@ if (!process.env.BASE_URL) {
 }
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './e2e',
   outputDir: 'test-results/',
   /* Run tests in files in parallel */
   fullyParallel: true,

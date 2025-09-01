@@ -29,9 +29,11 @@ export class Cart extends AppPage {
   }
 
   @step()
-  async removeProduct(productName: string): Promise<void> {
-    await this.buttonRemove(productName).click();
-    await expect(this.buttonRemove(productName)).not.toBeVisible();
+  async removeProducts(products: string[]): Promise<void> {
+    for (let product of products) {
+      await this.buttonRemove(product).click();
+      await expect(this.buttonRemove(product)).not.toBeVisible();
+    }
   }
 
   @step()
