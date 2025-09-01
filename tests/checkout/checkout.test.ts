@@ -17,12 +17,40 @@ checkoutFixture.describe('Custom cart: all products', () => {
   checkoutFixture(
     'Submit order with all products',
     { tag: ['@checkout'] },
-    async ({ app: { yourInformation, overview, header } }) => {
+    async ({ app: { yourInformation, overview, header }, cartOptions }) => {
       await yourInformation.expectLoaded();
       await yourInformation.fillForm();
       await yourInformation.submitForm();
       await overview.expectLoaded();
-      await header.shoppingCart.expectBadgeCount(6);
+      await header.shoppingCart.expectBadgeCount(cartOptions.products.length);
+    }
+  );
+});
+
+checkoutFixture.describe('Overview: remove all products', () => {
+  checkoutFixture.use({
+    cartOptions: {
+      products: [
+        'Sauce Labs Backpack',
+        'Sauce Labs Bike Light',
+        'Sauce Labs Bolt T-Shirt',
+        'Sauce Labs Fleece Jacket',
+        'Sauce Labs Onesie',
+        'Test.allTheThings() T-Shirt (Red)',
+      ],
+    },
+  });
+  checkoutFixture(
+    'Overview: remove all products',
+    { tag: ['@checkout'] },
+    async ({ app: { yourInformation, overview, header }, cartOptions }) => {
+      await yourInformation.expectLoaded();
+      await yourInformation.fillForm();
+      await yourInformation.submitForm();
+      await overview.expectLoaded();
+      await header.shoppingCart.expectBadgeCount(cartOptions.products.length);
+      await overview.removeAllProducts(cartOptions.products);
+      await header.shoppingCart.expectNoBadge();
     }
   );
 });
@@ -98,14 +126,19 @@ for (const { name } of cancelData) {
   });
 }
 
-const items = ['Sauce Labs Backpack', 'Sauce Labs Bike Light', 'Sauce Labs Bolt T-Shirt', 'Sauce Labs Fleece Jacket'];
+const products = [
+  'Sauce Labs Backpack',
+  'Sauce Labs Bike Light',
+  'Sauce Labs Bolt T-Shirt',
+  'Sauce Labs Fleece Jacket',
+];
 
 loggedUserFixture(
   'Adding several products to the cart and checking the amount',
   { tag: ['@checkout'] },
   async ({ app: { inventory, header, cart, yourInformation, overview } }) => {
-    await inventory.addProductsToCart(items);
-    const expectedItemTotal = await inventory.sumItemPrices(items);
+    await inventory.addProductsToCart(products);
+    const expectedItemTotal = await inventory.sumItemPrices(products);
     await header.shoppingCart.openCart();
     await cart.expectLoaded();
     await cart.clickCheckoutButton();

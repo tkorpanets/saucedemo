@@ -1,14 +1,15 @@
 import { expect } from '@playwright/test';
 import { AppPage } from '../../base.page';
+import { ProductDetails } from '../productDetails.page';
 
 type PriceTotalParams = {
-  itemTotal: number; // сума товарів з inventory.sumPrices(...)
-  taxRate: number; // наприклад 0.08 (8%)
+  itemTotal: number;
+  taxRate: number;
   labels: {
-    priceTotal: string; // "Price Total"
-    itemTotal: string; // "Item total:"
-    tax: string; // "Tax:"
-    total: string; // "Total:"
+    priceTotal: string;
+    itemTotal: string;
+    tax: string;
+    total: string;
   };
 };
 
@@ -28,7 +29,8 @@ export class Overview extends AppPage {
   private cancelButton = this.page.getByTestId('cancel');
   private finishButton = this.page.getByTestId('finish');
 
-  //   private productCard = (productName: string) => this.page.locator('div.cart_item').filter({ hasText: productName });
+  private productCard = (productName: string) => this.page.locator('div.cart_item').filter({ hasText: productName });
+  private productName = (productName: string) => this.productCard(productName).locator('div.inventory_item_name');
   //   private price = (productName: string) => this.productCard(productName).locator('div.inventory_item_price');
 
   async expectLoaded() {
@@ -75,5 +77,14 @@ export class Overview extends AppPage {
     const expectedTotal = Number((itemTotal + expectedTax).toFixed(2));
     await expect(this.totalLabel).toContainText(labels.total);
     await expect(this.totalLabel).toContainText(expectedTotal.toFixed(2));
+  }
+
+  async removeAllProducts(products: string[]) {
+    const details = new ProductDetails(this.page);
+    for (let product of products) {
+      await this.productName(product).click();
+      await details.clickRemoveButton();
+      await this.page.goBack();
+    }
   }
 }

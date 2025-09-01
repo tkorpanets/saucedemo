@@ -44,4 +44,9 @@ export class ProductDetails extends AppPage {
   async expectItemPrice(priceValue: string): Promise<void> {
     await expect(this.invPrice).toContainText(priceValue);
   }
+
+  @step()
+  async clickRemoveButton() {
+    await this.removeButton.click();
+  }
 }
