@@ -10,7 +10,7 @@ export class Complete extends AppPage {
 
   @step()
   async expectLoaded(): Promise<void> {
-    Promise.all([
+    await Promise.all([
       expect(this.image).toBeVisible(),
       expect(this.header).toBeVisible(),
       expect(this.text).toBeVisible(),
