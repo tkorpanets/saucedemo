@@ -12,6 +12,7 @@ export class YourInformation extends AppPage {
   private errorMessage = this.page.getByTestId('error');
   private errorClose = this.page.getByTestId('error-button');
 
+  @step()
   async expectLoaded() {
     await Promise.all([
       expect(this.inputFirstName).toBeVisible(),

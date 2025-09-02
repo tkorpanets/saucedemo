@@ -1,4 +1,4 @@
-const SortValues = {
+export const SortValues = {
   PriceLowHigh: 'Price (low to high)',
   PriceHighLow: 'Price (high to low)',
   NameAToZ: 'Name (A to Z)',

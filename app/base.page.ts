@@ -21,5 +21,5 @@ export abstract class AppPage extends BasePage {
  * has a clear "ready" state that needs to be verified.
  */
 export abstract class AppComponent extends BasePage {
-  async expectLoaded?(_message?: string): Promise<void> {}
+  async expectLoaded?(): Promise<void> {}
 }

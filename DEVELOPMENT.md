@@ -3,23 +3,31 @@
 ### `npx tsc --noEmit`
 
 Runs the TypeScript compiler in **type-check only** mode without generating any `.js` output files.  
-This ensures that your code and data (e.g., `users.json`) strictly match the defined TypeScript interfaces and types.
+Ensures that code strictly matches the defined TypeScript types and interfaces.
 
-Useful for detecting:
+Detects:
 
 - Missing required fields
 - Extra or misspelled keys
 - Incorrect value types
 
-> This command is fast because it does not produce any compiled files — it only analyzes types.
+---
 
-## Using Allure Reporter with Playwright
+## Linting
 
-To enable Allure reporting, install dependencies:
-`npm install -D allure-playwright` and `npm install -g allure-commandline`.  
-Allure requires Java — install JDK from https://adoptium.net/.  
-In `playwright.config.ts` set `reporter: [['html'], ['allure-playwright']]`.  
-Run tests with `npx playwright test --reporter=allure-playwright`, then generate the report with `allure generate ./allure-results -o ./allure-report` and open it using `allure open ./allure-report`.
+### `npx eslint . --max-warnings=0`
+
+Runs ESLint across the project with strict rules enabled.  
+Prevents merging code that violates style or best practices.
+
+Detects:
+
+- Unused variables and imports
+- Unsafe `any` usage
+- Incorrect `const` / `let`
+- Code style violations
+
+> Using `--max-warnings=0` enforces zero tolerance: even warnings block the pipeline.
 
 ## Run with Docker locally
 

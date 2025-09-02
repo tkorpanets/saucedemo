@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import { AppPage } from '../../base.page';
 import { ProductDetails } from '../productDetails.page';
+import { step } from '../../utils/step-decorator';
 
 type PriceTotalParams = {
   itemTotal: number;
@@ -33,6 +34,7 @@ export class Overview extends AppPage {
   private productName = (productName: string) => this.productCard(productName).locator('div.inventory_item_name');
   //   private price = (productName: string) => this.productCard(productName).locator('div.inventory_item_price');
 
+  @step()
   async expectLoaded() {
     await Promise.all([
       expect(this.cartQuantityLabel).toBeVisible(),
@@ -49,24 +51,29 @@ export class Overview extends AppPage {
     ]);
   }
 
+  @step()
   async clickFinishButton() {
     await this.finishButton.click();
   }
 
+  @step()
   async clickCancelButton() {
     await this.cancelButton.click();
   }
 
+  @step()
   async expectedPaymentInfo(expectedLabelPayInfo: string, expectedValuePayInfo: string) {
     await expect(this.labelPaymentInfo).toContainText(expectedLabelPayInfo);
     await expect(this.valuePaymentInfo).toContainText(expectedValuePayInfo);
   }
 
+  @step()
   async expectedShippingInfo(expectedLabelShipInfo: string, expectedValueShipInfo: string) {
     await expect(this.labelShippingInfo).toContainText(expectedLabelShipInfo);
     await expect(this.valueShippingInfo).toContainText(expectedValueShipInfo);
   }
 
+  @step()
   async expectPriceTotal({ itemTotal, taxRate, labels }: PriceTotalParams) {
     await expect(this.labelPriceTotal).toContainText(labels.priceTotal);
     await expect(this.subtotalLabel).toContainText(labels.itemTotal);
@@ -79,9 +86,10 @@ export class Overview extends AppPage {
     await expect(this.totalLabel).toContainText(expectedTotal.toFixed(2));
   }
 
+  @step()
   async removeAllProducts(products: string[]) {
     const details = new ProductDetails(this.page);
-    for (let product of products) {
+    for (const product of products) {
       await this.productName(product).click();
       await details.clickRemoveButton();
       await this.page.goBack();

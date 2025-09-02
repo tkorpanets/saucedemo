@@ -30,7 +30,7 @@ export class Cart extends AppPage {
 
   @step()
   async removeProducts(products: string[]): Promise<void> {
-    for (let product of products) {
+    for (const product of products) {
       await this.buttonRemove(product).click();
       await expect(this.buttonRemove(product)).not.toBeVisible();
     }
@@ -56,9 +56,4 @@ export class Cart extends AppPage {
   async expectNoItems(): Promise<void> {
     expect(await this.cartItems.count()).toBe(0);
   }
-
-  // @step('Availability of a specific product')
-  // async expectProductInCart(productName: string) {
-  //   await expect(this.productCard(productName)).toBeVisible();
-  // }
 }
