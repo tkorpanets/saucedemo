@@ -1,7 +1,7 @@
-import { checkoutFixture } from '../../app/fixtures';
+import { completedCheckoutFixture } from '../../app/fixtures';
 
-checkoutFixture.describe('Submit order', () => {
-  checkoutFixture.use({
+completedCheckoutFixture.describe('Submit order', () => {
+  completedCheckoutFixture.use({
     cartOptions: {
       products: [
         'Sauce Labs Backpack',
@@ -14,31 +14,27 @@ checkoutFixture.describe('Submit order', () => {
     },
   });
 
-  checkoutFixture(
+  completedCheckoutFixture(
     'Submit order with all products',
     { tag: ['@checkout', '@smoke'] },
-    async ({ app: { yourInformation, overview, header, complete }, cartOptions }) => {
+    async ({ app: { yourInformation, overview, header }, cartOptions }) => {
       await yourInformation.expectLoaded();
       await yourInformation.fillForm();
       await yourInformation.submitForm();
       await overview.expectLoaded();
       await header.shoppingCart.expectBadgeCount(cartOptions.products.length);
-      await overview.clickFinishButton();
-      await complete.expectLoaded();
     }
   );
 });
 
-checkoutFixture(
+completedCheckoutFixture(
   'Submit order with "Sauce Labs Backpack" (default products)',
   { tag: ['@checkout'] },
-  async ({ app: { yourInformation, overview, complete, header } }) => {
+  async ({ app: { yourInformation, overview, header } }) => {
     await yourInformation.expectLoaded();
     await yourInformation.fillForm();
     await yourInformation.submitForm();
     await overview.expectLoaded();
     await header.shoppingCart.expectBadgeCount(1);
-    await overview.clickFinishButton();
-    await complete.expectLoaded();
   }
 );

@@ -32,8 +32,8 @@ type CartOptions = {
 };
 
 export const checkoutFixture = loggedUserFixture.extend<AppFixture & { cartOptions: CartOptions }>({
-  // cartOptions: default value + { option: true } makes it overridable via .use() inside describe
-  // Default: ['Sauce Labs Backpack']
+  /* cartOptions: default value + { option: true } makes it overridable via .use() inside describe
+  Default: ['Sauce Labs Backpack'] */
   cartOptions: [{ products: ['Sauce Labs Backpack'] }, { option: true }],
   app: async ({ app, cartOptions }, use) => {
     // Add all products from cartOptions (can be overridden per describe)
@@ -44,5 +44,17 @@ export const checkoutFixture = loggedUserFixture.extend<AppFixture & { cartOptio
     await app.cart.expectLoaded();
     await app.cart.clickCheckoutButton();
     await use(app);
+  },
+});
+
+/*Fixture with a post-condition:
+after the test it automatically completes checkout (Finish → Complete)
+and returns the user to the home page. */
+export const completedCheckoutFixture = checkoutFixture.extend<AppFixture>({
+  app: async ({ app }, use) => {
+    await use(app);
+    await app.overview.clickFinishButton();
+    await app.complete.expectLoaded();
+    await app.complete.backToHome();
   },
 });
