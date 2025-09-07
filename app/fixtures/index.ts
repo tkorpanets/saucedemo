@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test';
 import { Application } from '..';
-import { users } from '../helpers/users';
+import path from 'node:path';
 
 type AppFixture = { app: Application };
 
@@ -18,12 +18,28 @@ export const loginPageFixture = test.extend<AppFixture>({
   },
 });
 
-export const loggedUserFixture = loginPageFixture.extend<AppFixture>({
-  app: async ({ app }, use) => {
-    const { username, password } = users.standard;
-    await app.login.login(username, password);
+//import { users } from '../helpers/users';
+// export const loggedUserFixture = loginPageFixture.extend<AppFixture>({
+//   app: async ({ app }, use) => {
+//     const { username, password } = users.standard;
+//     await app.login.login(username, password);
+//     await app.header.expectLoaded();
+//     await use(app);
+//   },
+// });
+
+/* Fixture that spins up a browser context with a saved storageState
+→ simulates a logged-in "standard" user session*/
+export const loggedUserFixture = base.extend<AppFixture>({
+  app: async ({ browser }, use) => {
+    const storagePath = path.resolve('app/storage/standard.json');
+    const context = await browser.newContext({ storageState: storagePath });
+    const page = await context.newPage();
+    const app = new Application(page);
+    await page.goto('/inventory.html');
     await app.header.expectLoaded();
     await use(app);
+    await context.close();
   },
 });
 

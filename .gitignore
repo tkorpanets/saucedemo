@@ -8,5 +8,6 @@ node_modules/
 /data/users.json
 .env.dev
 .env.stage
+/app/storage/
 # VS Code
 .vscode             
