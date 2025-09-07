@@ -28,18 +28,27 @@ export const loginPageFixture = test.extend<AppFixture>({
 //   },
 // });
 
-/* Fixture that spins up a browser context with a saved storageState
-→ simulates a logged-in "standard" user session*/
+/* Fixture that creates a browser context using a saved storageState
+   → simulates a logged-in "standard" user session */
 export const loggedUserFixture = base.extend<AppFixture>({
-  app: async ({ browser }, use) => {
+  //Override the default context with one that uses the storageState
+  context: async ({ browser }, use) => {
     const storagePath = path.resolve('app/storage/standard.json');
     const context = await browser.newContext({ storageState: storagePath });
+    await use(context);
+    await context.close();
+  },
+  //Override the default page so it belongs to the custom context
+  page: async ({ context }, use) => {
     const page = await context.newPage();
-    const app = new Application(page);
     await page.goto('/inventory.html');
+    await use(page);
+  },
+  //Provide an Application instance bound to this page
+  app: async ({ page }, use) => {
+    const app = new Application(page);
     await app.header.expectLoaded();
     await use(app);
-    await context.close();
   },
 });
 
