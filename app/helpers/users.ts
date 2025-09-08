@@ -11,6 +11,10 @@ export const users = {
     username: process.env.PERF_USER!,
     password: process.env.PERF_PASS!,
   },
+  visual: {
+    username: process.env.VISUAL_USER!,
+    password: process.env.VISUAL_PASS!,
+  },
 } as const;
 
 export const baseUrl = process.env.BASE_URL!;

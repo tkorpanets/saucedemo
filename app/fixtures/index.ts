@@ -1,8 +1,10 @@
 import { test as base } from '@playwright/test';
 import { Application } from '..';
-import path from 'node:path';
+import { INVENTORY_URL, STORAGE_STATE_STANDARD_USER, STORAGE_STATE_VISUAL_USER } from '../constants';
 
-type AppFixture = { app: Application };
+type AppFixture = {
+  app: Application;
+};
 
 export const test = base.extend<AppFixture>({
   app: async ({ page }, use) => {
@@ -18,35 +20,28 @@ export const loginPageFixture = test.extend<AppFixture>({
   },
 });
 
-//import { users } from '../helpers/users';
-// export const loggedUserFixture = loginPageFixture.extend<AppFixture>({
-//   app: async ({ app }, use) => {
-//     const { username, password } = users.standard;
-//     await app.login.login(username, password);
-//     await app.header.expectLoaded();
-//     await use(app);
-//   },
-// });
+type UserKey = 'standard' | 'visual';
 
-/* Fixture that creates a browser context using a saved storageState
-   → simulates a logged-in "standard" user session */
-export const loggedUserFixture = base.extend<AppFixture>({
-  //Override the default context with one that uses the storageState
-  context: async ({ browser }, use) => {
-    const storagePath = path.resolve('app/storage/standard.json');
-    const context = await browser.newContext({ storageState: storagePath });
-    await use(context);
-    await context.close();
+const USER_STORAGE: Record<UserKey, string> = {
+  standard: STORAGE_STATE_STANDARD_USER,
+  visual: STORAGE_STATE_VISUAL_USER,
+};
+
+export const loggedUserFixture = test.extend<AppFixture & { user: UserKey }>({
+  /* user: default value + { option: true } makes it overridable via .use() inside describe
+     Default: 'standard'
+     Available: 'standard', 'visual'*/
+  user: ['standard', { option: true }],
+  storageState: async ({ user }, use) => {
+    // Map user key to correct storage state
+    const state = USER_STORAGE[user];
+    if (!state) throw new Error(`Unknown user key: ${user}`);
+    await use(state);
   },
-  //Override the default page so it belongs to the custom context
-  page: async ({ context }, use) => {
-    const page = await context.newPage();
-    await page.goto('/inventory.html');
-    await use(page);
-  },
-  //Provide an Application instance bound to this page
   app: async ({ page }, use) => {
+    // Initialize application and ensure header is loaded
     const app = new Application(page);
+    await page.goto(INVENTORY_URL);
     await app.header.expectLoaded();
     await use(app);
   },
