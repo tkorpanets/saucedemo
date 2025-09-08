@@ -40,10 +40,10 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     /*IMPORTANT: To enable video recording, tests must be run via CLI (e.g., `npm run test`)
     Video may not be saved when tests are run from the Playwright UI or VSCode extension */
-    // video: {
-    //   mode: 'retain-on-failure',
-    //   size: { width: 640, height: 480 },
-    // },
+    video: {
+      mode: 'retain-on-failure',
+      size: { width: 640, height: 480 },
+    },
     testIdAttribute: 'data-test',
     //
   },
