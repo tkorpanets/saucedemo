@@ -37,6 +37,8 @@ jobs:
             -e LOCKED_PASS="${{ secrets.LOCKED_PASS }}" \
             -e PERF_USER="${{ secrets.PERF_USER }}" \
             -e PERF_PASS="${{ secrets.PERF_PASS }}" \
+            -e VISUAL_USER="${{ secrets.VISUAL_USER }}" \
+            -e VISUAL_PASS="${{ secrets.VISUAL_PASS }}" \
             -v ${{ github.workspace }}/playwright-report:/app/playwright-report \
             demo-pw-e2e:latest
 

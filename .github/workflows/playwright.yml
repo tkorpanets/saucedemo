@@ -26,6 +26,8 @@ jobs:
       LOCKED_PASS: ${{ secrets.LOCKED_PASS }}
       PERF_USER: ${{ secrets.PERF_USER }}
       PERF_PASS: ${{ secrets.PERF_PASS }}
+      VISUAL_USER: ${{ secrets.VISUAL_USER }}
+      VISUAL_PASS: ${{ secrets.VISUAL_PASS }}
 
     steps:
       - uses: actions/checkout@v3
