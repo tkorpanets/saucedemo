@@ -29,37 +29,38 @@
 
 ## ⚡ Quick Start
 
-````bash
-npm ci
-npx playwright install --with-deps
-npm test
-npx playwright show-report
+`npm ci`
+`npx playwright install --with-deps`
+`npm test`
+`npx playwright show-report`
 
-config/.env.dev
+Create environment file `config/.env.dev`
+
 # .env.dev
-BASE_URL=https://www.saucedemo.com/
 
-STANDARD_USER=standard_user
-STANDARD_PASS=secret_sauce
+`BASE_URL=https://www.saucedemo.com/`
 
-LOCKED_USER=locked_out_user
-LOCKED_PASS=secret_sauce
+`STANDARD_USER=standard_user`
+`STANDARD_PASS=secret_sauce`
 
-PERF_USER=performance_glitch_user
-PERF_PASS=secret_sauce
+`LOCKED_USER=locked_out_user`
+`LOCKED_PASS=secret_sauce`
 
-VISUAL_USER=visual_user
-VISUAL_PASS=secret_sauce
+`PERF_USER=performance_glitch_user`
+`PERF_PASS=secret_sauce`
+
+`VISUAL_USER=visual_user`
+`VISUAL_PASS=secret_sauce`
 
 Run filtered:
-npx playwright test --grep "@smoke"
-npx playwright test e2e/cart/
+`npx playwright test --grep "@smoke"`
+`npx playwright test e2e/cart/`
 
 🧩 Fixtures
-loginPageFixture – ensures we start on Login page
-loggedUserFixture – loads storageState, lands on Inventory
-checkoutFixture – pre-fills cart and navigates to Checkout Info
-completedCheckoutFixture – auto-finishes order after test
+`loginPageFixture` – ensures we start on Login page
+`loggedUserFixture` – loads storageState, lands on Inventory
+`checkoutFixture` – pre-fills cart and navigates to Checkout Info
+`completedCheckoutFixture` – auto-finishes order after test
 
 📊 Test Coverage
 ✅ Login: positive + negative (locked user)
@@ -103,7 +104,7 @@ loggedUserFixture('Products are sorted by price from low to high', async ({ app 
   await app.header.sort.sortBy('Price (low to high)');
   await app.inventory.checkSortingByPrice('low to high');
 });
-````
+```
 
 🐳 Dockerized CI
 
