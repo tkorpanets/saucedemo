@@ -32,18 +32,18 @@ Detects:
 ## Run with Docker locally
 
 Build the image:
-docker build -t demo-pw-e2e .
+`docker build -t demo-pw-e2e .`
 
 Run tests with environment variables from .env.dev or .env.stage (stored under config/):
 
 Dev environment
-docker run --rm --shm-size=1g --env-file ${PWD}\config\.env.dev -v ${PWD}\playwright-report:/app/playwright-report demo-pw-e2e
+`docker run --rm --shm-size=1g --env-file ${PWD}\config\.env.dev -v ${PWD}\playwright-report:/app/playwright-report demo-pw-e2e`
 
 Stage environment
-docker run --rm --shm-size=1g --env-file ${PWD}\config\.env.stage -v ${PWD}\playwright-report:/app/playwright-report demo-pw-e2e
+`docker run --rm --shm-size=1g --env-file ${PWD}\config\.env.stage -v ${PWD}\playwright-report:/app/playwright-report demo-pw-e2e`
 
 View Playwright Report
 After the run, the HTML report is available in the playwright-report folder.
-Windows (PowerShell): start .\playwright-report\index.html
-macOS: open ./playwright-report/index.html
-Linux: xdg-open ./playwright-report/index.html
+Windows (PowerShell): `start .\playwright-report\index.html`
+macOS: `open ./playwright-report/index.html`
+Linux: `xdg-open ./playwright-report/index.html`
