@@ -27,62 +27,79 @@
 | 🧪 Reporting    | Built-in Playwright HTML Report, Custom Step Decorator                                |
 | 📂 Structure    | Modular pages/components, fixture-based setup                                         |
 
+---
+
 ## ⚡ Quick Start
 
-`npm ci`
-`npx playwright install --with-deps`
-`npm test`
-`npx playwright show-report`
+### Install and run tests locally
 
-Create environment file `config/.env.dev`
+```bash
+npm ci
+npx playwright install --with-deps
+npm test
+npx playwright show-report
+```
 
-# .env.dev
+### Environment file
 
-`BASE_URL=https://www.saucedemo.com/`
+```ini
+# config/.env.dev
+BASE_URL=https://www.saucedemo.com/
 
-`STANDARD_USER=standard_user`
-`STANDARD_PASS=secret_sauce`
+STANDARD_USER=standard_user
+STANDARD_PASS=secret_sauce
 
-`LOCKED_USER=locked_out_user`
-`LOCKED_PASS=secret_sauce`
+LOCKED_USER=locked_out_user
+LOCKED_PASS=secret_sauce
 
-`PERF_USER=performance_glitch_user`
-`PERF_PASS=secret_sauce`
+PERF_USER=performance_glitch_user
+PERF_PASS=secret_sauce
 
-`VISUAL_USER=visual_user`
-`VISUAL_PASS=secret_sauce`
+VISUAL_USER=visual_user
+VISUAL_PASS=secret_sauce
+```
 
-Run filtered:
-`npx playwright test --grep "@smoke"`
-`npx playwright test e2e/cart/`
+### Run filtered tests
 
-🧩 Fixtures
-`loginPageFixture` – ensures we start on Login page
-`loggedUserFixture` – loads storageState, lands on Inventory
-`checkoutFixture` – pre-fills cart and navigates to Checkout Info
-`completedCheckoutFixture` – auto-finishes order after test
+```bash
+npx playwright test --grep "@smoke"
+npx playwright test e2e/cart/
 
-📊 Test Coverage
-✅ Login: positive + negative (locked user)
-✅ Inventory: add/remove, sorting
-✅ Cart: badge counts, empty cart, remove item
-✅ PDP: product details, add to cart
-✅ Checkout: form validation, overview, totals, complete order
-✅ Users: standard, problem/visual
+# Run cross-browser (if enabled in playwright.config.ts)
+npx playwright test --project=Firefox
+```
+---
+
+## 🧩 Fixtures
+
+- **`loginPageFixture`** – ensures we start on Login page
+- **`loggedUserFixture`** – loads storageState, lands on Inventory
+- **`checkoutFixture`** – pre-fills cart and navigates to Checkout Info
+- **`completedCheckoutFixture`** – auto-finishes order after test
+
+---
+
+## 📊 Test Coverage
+
+- ✅ Login: positive + negative (locked user)
+- ✅ Inventory: add/remove, sorting
+- ✅ Cart: badge counts, empty cart, remove item
+- ✅ PDP: product details, add to cart
+- ✅ Checkout: form validation, overview, totals, complete order
+- ✅ Users: standard, problem/visual
+
+---
 
 ## 📄 GitHub Actions Overview
 
-🔁 Trigger: **Manually via workflow_dispatch**
+- 🛠 Install dependencies
+- 🔐 Read GitHub Secrets as environment variables
+- 🧪 Run Playwright tests (with storageState, fixtures, etc.)
+- 🗃 Upload HTML report as artifact
+- 🌐 Deploy HTML report to GitHub Pages
 
-Steps:
-
-🛠 Install dependencies
-🔐 Read GitHub Secrets as environment variables
-🧪 Run Playwright tests (with storageState, fixtures, etc.)
-🗃 Upload HTML report as artifact
-🌐 Deploy HTML report to GitHub Pages
-✅ View live report:
-🔗 tkorpanets.github.io/demo-playwright-typescript
+✅ **View live report:**  
+[🔗 tkorpanets.github.io/demo-playwright-typescript](https://tkorpanets.github.io/demo-playwright-typescript/)
 
 ---
 
@@ -106,12 +123,22 @@ loggedUserFixture('Products are sorted by price from low to high', async ({ app 
 });
 ```
 
-🐳 Dockerized CI
+---
+
+## 🐳 Dockerized CI
+
+```bash
+# Build Docker image
+docker build -t pw-demo .
+
+# Run inside container
+docker run --rm -e ENV_TARGET=dev pw-demo
+```
 
 This project runs Playwright tests in two ways with GitHub Actions:
 
-- Container workflow: uses official Playwright image with browsers preinstalled
-- Custom Dockerfile: builds from scratch for identical local/CI environment
+- **Container workflow**: uses official Playwright image with browsers preinstalled
+- **Custom Dockerfile**: builds from scratch for identical local/CI environment
 
 Both variants:
 
@@ -119,14 +146,17 @@ Both variants:
 - Run tests & generate HTML report
 - Upload artifacts & deploy to GitHub Pages
 
-Run locally:
-docker build -t pw-demo .
-docker run --rm -e ENV_TARGET=dev pw-demo
+---
 
-💡 Notes
-✅ Secrets never stored in repo
-✅ HTML reports auto-deployed
-✅ Works locally, in Docker, and in CI
+## 💡 Notes
 
-📜 License
+- ✅ Secrets never stored in repo
+- ✅ HTML reports auto-deployed
+- ✅ Works locally, in Docker, and in CI
+- ✅ Extensible: add cross-browser, visual regression, Allure
+
+---
+
+## 📜 License
+
 MIT © 2025 Taras Korpanets
