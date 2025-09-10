@@ -59,6 +59,23 @@ VISUAL_USER=visual_user
 VISUAL_PASS=secret_sauce
 ```
 
+```ini
+# config/.env.stage
+BASE_URL=https://www.saucedemo.com/
+
+STANDARD_USER=standard_user
+STANDARD_PASS=secret_sauce
+
+LOCKED_USER=locked_out_user
+LOCKED_PASS=secret_sauce
+
+PERF_USER=performance_glitch_user
+PERF_PASS=secret_sauce
+
+VISUAL_USER=visual_user
+VISUAL_PASS=secret_sauce
+```
+
 ### Run filtered tests
 
 ```bash
@@ -68,6 +85,7 @@ npx playwright test e2e/cart/
 # Run cross-browser (if enabled in playwright.config.ts)
 npx playwright test --project=Firefox
 ```
+
 ---
 
 ## 🧩 Fixtures
