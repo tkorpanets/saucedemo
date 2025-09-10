@@ -1,6 +1,6 @@
-# 🧪 Playwright + GitHub Pages Report Demo
+# 🧪 Playwright + TypeScript Demo
 
-> ✨ A complete demo showcasing **E2E testing with Playwright**, secret-based login, and **automated HTML reports** via GitHub Pages.
+✨ A complete demo showcasing **end-to-end testing with Playwright** in **TypeScript**, featuring a secure **secret-based login flow**, reusable **Page Object Model** with **custom fixtures**, elegant **step-level reporting**, and fully automated **CI/CD pipelines** that generate and publish interactive **HTML test reports** via **GitHub Pages**.
 
 ---
 
@@ -26,6 +26,48 @@
 | ⚙️ CI/CD        | GitHub Actions, GitHub Pages, GitHub Secrets, Docker                                  |
 | 🧪 Reporting    | Built-in Playwright HTML Report, Custom Step Decorator                                |
 | 📂 Structure    | Modular pages/components, fixture-based setup                                         |
+
+## ⚡ Quick Start
+
+````bash
+npm ci
+npx playwright install --with-deps
+npm test
+npx playwright show-report
+
+config/.env.dev
+# .env.dev
+BASE_URL=https://www.saucedemo.com/
+
+STANDARD_USER=standard_user
+STANDARD_PASS=secret_sauce
+
+LOCKED_USER=locked_out_user
+LOCKED_PASS=secret_sauce
+
+PERF_USER=performance_glitch_user
+PERF_PASS=secret_sauce
+
+VISUAL_USER=visual_user
+VISUAL_PASS=secret_sauce
+
+Run filtered:
+npx playwright test --grep "@smoke"
+npx playwright test e2e/cart/
+
+🧩 Fixtures
+loginPageFixture – ensures we start on Login page
+loggedUserFixture – loads storageState, lands on Inventory
+checkoutFixture – pre-fills cart and navigates to Checkout Info
+completedCheckoutFixture – auto-finishes order after test
+
+📊 Test Coverage
+✅ Login: positive + negative (locked user)
+✅ Inventory: add/remove, sorting
+✅ Cart: badge counts, empty cart, remove item
+✅ PDP: product details, add to cart
+✅ Checkout: form validation, overview, totals, complete order
+✅ Users: standard, problem/visual
 
 ## 📄 GitHub Actions Overview
 
@@ -61,28 +103,29 @@ loggedUserFixture('Products are sorted by price from low to high', async ({ app 
   await app.header.sort.sortBy('Price (low to high)');
   await app.inventory.checkSortingByPrice('low to high');
 });
-```
-
-📥 How to Run Tests Manually
-
-1. Go to the Actions tab in GitHub
-2. Select Playwright Tests
-3. Click Run workflow
+````
 
 🐳 Dockerized CI
 
-This project runs Playwright tests in two ways with GitHub Actions. One workflow uses the official Playwright container with browsers preinstalled for fast and simple CI. The other builds a custom Docker image from the provided Dockerfile, giving a production-like setup and the same environment locally and in CI.
+This project runs Playwright tests in two ways with GitHub Actions:
 
-Both workflows read environment variables and secrets such as BASE_URL and STANDARD_USER, run the tests, generate an HTML report, upload it as an artifact, and deploy it to GitHub Pages (gh-pages).
+- Container workflow: uses official Playwright image with browsers preinstalled
+- Custom Dockerfile: builds from scratch for identical local/CI environment
 
-Files used: .github/workflows/playwright-in-container.yml, .github/workflows/playwright-dockerfile.yml, and Dockerfile (based on mcr.microsoft.com/playwright:vX.YY.Z-noble).
+Both variants:
 
-You can also run the same process locally by building the image and running it with ENV_TARGET and BASE_URL, mounting the playwright-report folder to access the generated HTML report.
+- Read environment variables and GitHub Secrets
+- Run tests & generate HTML report
+- Upload artifacts & deploy to GitHub Pages
+
+Run locally:
+docker build -t pw-demo .
+docker run --rm -e ENV_TARGET=dev pw-demo
 
 💡 Notes
 ✅ Secrets never stored in repo
-✅ HTML reports are auto-deployed
-✅ Great as a starter for real-world project
+✅ HTML reports auto-deployed
+✅ Works locally, in Docker, and in CI
 
 📜 License
 MIT © 2025 Taras Korpanets
