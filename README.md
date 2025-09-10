@@ -7,11 +7,13 @@
 ## 🚀 Project Highlights
 
 - 🔐 Secure login with **GitHub Secrets**
-- 📊 Live **Playwright test reports** hosted via **GitHub Pages**
+- 📊 Live **Playwright HTML reports** hosted via **GitHub Pages**
 - 🧱 Clean, modular **Page Object Model (POM)**
+- 🧩 Powerful **custom fixtures**: login, logged user, prefilled cart, checkout
 - ⚙️ Fully automated CI with **GitHub Actions**
 - 🧪 Elegant step logging with a custom `@step` decorator
-- 📁 Downloadable `.zip` test reports for local review
+- 🐳 Dockerized CI/CD with official Playwright image or custom Dockerfile
+- 📁 Downloadable `.zip` reports for local review
 
 ---
 
@@ -21,24 +23,9 @@
 | --------------- | ------------------------------------------------------------------------------------- |
 | 🔧 Framework    | [Playwright](https://playwright.dev/) + [TypeScript](https://www.typescriptlang.org/) |
 | 🧱 Architecture | Page Object Model, Base Fixture Pattern, Centralized `app` access                     |
-| ⚙️ CI/CD        | GitHub Actions, GitHub Pages, GitHub Secrets                                          |
-| 🧪 Reporting    | Built-in Playwright HTML Report, Step Decorators                                      |
+| ⚙️ CI/CD        | GitHub Actions, GitHub Pages, GitHub Secrets, Docker                                  |
+| 🧪 Reporting    | Built-in Playwright HTML Report, Custom Step Decorator                                |
 | 📂 Structure    | Modular pages/components, fixture-based setup                                         |
-
----
-
-## 🧱 Project Structure
-
-📁 app/
-├── page/ # Full page objects
-├── component/ # Reusable components
-├── abstractClasses/ # Base AppPage class
-📁 fixtures/ # Custom fixtures: base, logged-in
-📁 data/ # User JSON generated from secrets
-📁 misc/ # Custom @step decorator
-📁 tests/ # Organized test files
-
----
 
 ## 📄 GitHub Actions Overview
 
@@ -46,14 +33,13 @@
 
 Steps:
 
-1. 🛠 Install dependencies
-2. 🔐 Inject secrets into `data/users.json`
-3. 🧪 Run Playwright tests
-4. 🗃 Upload report as artifact
-5. 🌐 Deploy HTML report to GitHub Pages branch
-
-✅ **View live report:**  
-[🔗 tkorpanets.github.io/demo-ghpages-report-secrets](https://tkorpanets.github.io/demo-ghpages-report-secrets/)
+🛠 Install dependencies
+🔐 Read GitHub Secrets as environment variables
+🧪 Run Playwright tests (with storageState, fixtures, etc.)
+🗃 Upload HTML report as artifact
+🌐 Deploy HTML report to GitHub Pages
+✅ View live report:
+🔗 tkorpanets.github.io/demo-playwright-typescript
 
 ---
 
@@ -64,7 +50,7 @@ Steps:
 | `STANDARD_USER` | Login username |
 | `SECRET_SAUCE`  | Login password |
 
-> These secrets are injected into `data/users.json` before test execution.
+> Secrets are consumed directly from GitHub Actions environment, not stored in the repo.
 
 ---
 
