@@ -6,8 +6,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /data/users.json
-.env.dev
-.env.stage
+config/.env.* 
 /app/storage/
 # VS Code
 .vscode             

@@ -1,5 +1,5 @@
 import { loggedUserFixture } from '../../app/fixtures';
-import { SortByValue } from '../../app/types/sorting';
+import type { SortByValue } from '../../app/types/sorting';
 
 const cases: Array<{ title: string; sortByValue: SortByValue }> = [
   { title: 'Products are sorted by name from A to Z', sortByValue: 'Name (A to Z)' },

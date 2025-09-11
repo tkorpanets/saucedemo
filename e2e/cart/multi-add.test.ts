@@ -1,15 +1,16 @@
 import { loggedUserFixture } from '../../app/fixtures';
+import { Products } from '../../app/constants/products';
 
 const addToCartCases = [
-  { products: ['Sauce Labs Backpack', 'Sauce Labs Bike Light'] },
+  { products: [Products.Backpack, Products.BikeLight] },
   {
     products: [
-      'Sauce Labs Backpack',
-      'Sauce Labs Bike Light',
-      'Sauce Labs Bolt T-Shirt',
-      'Sauce Labs Fleece Jacket',
-      'Sauce Labs Onesie',
-      'Test.allTheThings() T-Shirt (Red)',
+      Products.Backpack,
+      Products.BikeLight,
+      Products.BoltTShirt,
+      Products.FleeceJacket,
+      Products.Onesie,
+      Products.RedTShirt,
     ],
   },
 ] as const;
@@ -32,11 +33,11 @@ loggedUserFixture(
   'Cart badge and states persist after reload',
   { tag: ['@cart'] },
   async ({ app: { inventory, header }, page }) => {
-    await inventory.addProductsToCart(['Sauce Labs Backpack', 'Sauce Labs Fleece Jacket']);
+    await inventory.addProductsToCart([Products.Backpack, Products.FleeceJacket]);
     await header.shoppingCart.expectBadgeCount(2);
     await page.reload();
     await header.shoppingCart.expectBadgeCount(2);
-    await inventory.expectButtonLabel('Sauce Labs Backpack', 'Remove');
-    await inventory.expectButtonLabel('Sauce Labs Fleece Jacket', 'Remove');
+    await inventory.expectButtonLabel(Products.Backpack, 'Remove');
+    await inventory.expectButtonLabel(Products.FleeceJacket, 'Remove');
   }
 );

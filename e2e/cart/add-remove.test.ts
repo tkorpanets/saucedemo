@@ -1,15 +1,16 @@
 import { loggedUserFixture } from '../../app/fixtures';
+import { Products } from '../../app/constants/products';
 
 loggedUserFixture(
   'Add product to cart and check cart',
   { tag: ['@cart', '@smoke'] },
   async ({ app: { inventory, header, cart } }) => {
-    await inventory.addProductToCart('Sauce Labs Backpack');
+    await inventory.addProductToCart(Products.Backpack);
     await header.shoppingCart.expectBadgeCount(1);
-    const price = await inventory.getItemPrice('Sauce Labs Backpack');
+    const price = await inventory.getItemPrice(Products.Backpack);
     await header.shoppingCart.openCart();
     await cart.expectLoaded();
-    await cart.expectItemPrice('Sauce Labs Backpack', price);
+    await cart.expectItemPrice(Products.Backpack, price);
   }
 );
 
@@ -17,10 +18,10 @@ loggedUserFixture(
   'Add and remove product from cart',
   { tag: ['@cart'] },
   async ({ app: { inventory, header, cart } }) => {
-    await inventory.addProductToCart('Sauce Labs Backpack');
+    await inventory.addProductToCart(Products.Backpack);
     await header.shoppingCart.openCart();
     await cart.expectLoaded();
-    await cart.removeProducts(['Sauce Labs Backpack']);
+    await cart.removeProducts([Products.Backpack]);
     await header.shoppingCart.expectNoBadge();
     await cart.clickContinueShoppingButton();
     await header.shoppingCart.expectNoBadge();
@@ -41,12 +42,12 @@ loggedUserFixture.describe('Visual defect user tests', () => {
     'Add product to cart and check cart',
     { tag: ['@cart', '@smoke'] },
     async ({ app: { inventory, header, cart } }) => {
-      await inventory.addProductToCart('Sauce Labs Backpack');
+      await inventory.addProductToCart(Products.Backpack);
       await header.shoppingCart.expectBadgeCount(1);
-      const price = await inventory.getItemPrice('Sauce Labs Backpack');
+      const price = await inventory.getItemPrice(Products.Backpack);
       await header.shoppingCart.openCart();
       await cart.expectLoaded();
-      await cart.expectItemPrice('Sauce Labs Backpack', price);
+      await cart.expectItemPrice(Products.Backpack, price);
     }
   );
 
@@ -54,10 +55,10 @@ loggedUserFixture.describe('Visual defect user tests', () => {
     'Add and remove product from cart',
     { tag: ['@cart'] },
     async ({ app: { inventory, header, cart } }) => {
-      await inventory.addProductToCart('Sauce Labs Backpack');
+      await inventory.addProductToCart(Products.Backpack);
       await header.shoppingCart.openCart();
       await cart.expectLoaded();
-      await cart.removeProducts(['Sauce Labs Backpack']);
+      await cart.removeProducts([Products.Backpack]);
       await header.shoppingCart.expectNoBadge();
       await cart.clickContinueShoppingButton();
       await header.shoppingCart.expectNoBadge();

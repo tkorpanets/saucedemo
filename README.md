@@ -83,7 +83,7 @@ npx playwright test --grep "@smoke"
 npx playwright test e2e/cart/
 
 # Run cross-browser (if enabled in playwright.config.ts)
-npx playwright test --project=Firefox
+npx playwright test --project=firefox
 ```
 
 ---
@@ -94,6 +94,14 @@ npx playwright test --project=Firefox
 - **`loggedUserFixture`** – loads storageState, lands on Inventory
 - **`checkoutFixture`** – pre-fills cart and navigates to Checkout Info
 - **`completedCheckoutFixture`** – auto-finishes order after test
+
+---
+
+## 🎯 Locator Policy
+
+- Prefer `getByTestId('data-test')` for component stability.
+- Use `getByRole` with accessible names for interactive controls.
+- Avoid deep CSS selectors; keep selectors shallow and resilient.
 
 ---
 
@@ -126,7 +134,13 @@ npx playwright test --project=Firefox
 | Name            | Purpose        |
 | --------------- | -------------- |
 | `STANDARD_USER` | Login username |
-| `SECRET_SAUCE`  | Login password |
+| `STANDARD_PASS` | Login password |
+| `LOCKED_USER`   | Login username |
+| `LOCKED_PASS`   | Login password |
+| `PERF_USER`     | Login username |
+| `PERF_PASS`     | Login password |
+| `VISUAL_USER`   | Login username |
+| `VISUAL_PASS`   | Login password |
 
 > Secrets are consumed directly from GitHub Actions environment, not stored in the repo.
 

@@ -1,7 +1,8 @@
 import { checkoutFixture, loggedUserFixture } from '../../app/fixtures';
+import { Products } from '../../app/constants/products';
 
-const productsA = ['Sauce Labs Backpack', 'Sauce Labs Bike Light', 'Sauce Labs Bolt T-Shirt'];
-const productsB = ['Sauce Labs Fleece Jacket', 'Sauce Labs Onesie'];
+const productsA = [Products.Backpack, Products.BikeLight, Products.BoltTShirt];
+const productsB = [Products.FleeceJacket, Products.Onesie];
 
 loggedUserFixture(
   'Payment & totals for set A (tax 8%)',
@@ -45,7 +46,7 @@ loggedUserFixture(
   }
 );
 
-checkoutFixture('Trims spaces & neutralizes HTML in last name', async ({ app: { yourInformation } }) => {
+checkoutFixture('Trims spaces & neutralizes HTML in last name', async ({ app: { yourInformation, overview } }) => {
   await yourInformation.expectLoaded();
   await yourInformation.fillForm({
     firstName: '  John  ',
@@ -53,9 +54,10 @@ checkoutFixture('Trims spaces & neutralizes HTML in last name', async ({ app: { 
     postalCode: '  12-345  ',
   });
   await yourInformation.submitForm();
+  await overview.expectLoaded();
 });
 
-checkoutFixture('Trims spaces & neutralizes HTML in first name', async ({ app: { yourInformation } }) => {
+checkoutFixture('Trims spaces & neutralizes HTML in first name', async ({ app: { yourInformation, overview } }) => {
   await yourInformation.expectLoaded();
   await yourInformation.fillForm({
     firstName: '<svg onload=confirm(1)> ',
@@ -63,10 +65,11 @@ checkoutFixture('Trims spaces & neutralizes HTML in first name', async ({ app: {
     postalCode: '  99-999 ',
   });
   await yourInformation.submitForm();
+  await overview.expectLoaded();
 });
 
 loggedUserFixture('Cart persists after reload', async ({ app: { inventory, header }, page }) => {
-  await inventory.addProductsToCart(['Sauce Labs Backpack', 'Sauce Labs Onesie']);
+  await inventory.addProductsToCart([Products.Backpack, Products.Onesie]);
   await page.reload();
   await header.shoppingCart.expectBadgeCount(2);
 });

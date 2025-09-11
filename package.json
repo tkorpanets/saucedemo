@@ -21,6 +21,7 @@
     "@playwright/test": "^1.55.0",
     "@types/node": "^24.0.15",
     "eslint": "^9.34.0",
+    "eslint-plugin-playwright": "^1.5.4",
     "globals": "^16.3.0",
     "jiti": "^2.5.1",
     "typescript": "^5.9.2",

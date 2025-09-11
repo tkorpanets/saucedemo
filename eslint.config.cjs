@@ -46,7 +46,33 @@ module.exports = tseslint.config(
     },
     plugins: {
       '@typescript-eslint': tseslint.plugin,
+      playwright: require('eslint-plugin-playwright'),
     },
-    rules: {},
+    rules: {
+      // General quality
+      '@typescript-eslint/consistent-type-imports': 'warn',
+      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: { attributes: false } }],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+
+      // Playwright best practices
+      'playwright/no-conditional-in-test': 'warn',
+      'playwright/no-force-option': 'warn',
+      'playwright/no-eval': 'error',
+      'playwright/no-page-pause': 'warn',
+      'playwright/no-skipped-test': 'error',
+      'playwright/no-focused-test': 'error',
+      'playwright/prefer-locator': 'warn',
+      'playwright/prefer-to-have-length': 'warn',
+      'playwright/valid-expect': 'error',
+    },
+  },
+  {
+    files: ['e2e/**/*.{ts,tsx}'],
+    plugins: { playwright: require('eslint-plugin-playwright') },
+    rules: {
+      // Test-specific style tweaks
+      'playwright/no-networkidle': 'off',
+    },
   }
 );

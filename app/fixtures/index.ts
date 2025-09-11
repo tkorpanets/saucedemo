@@ -1,6 +1,7 @@
 import { test as base } from '@playwright/test';
 import { Application } from '..';
 import { INVENTORY_URL, STORAGE_STATE_STANDARD_USER, STORAGE_STATE_VISUAL_USER } from '../constants';
+import { Products } from '../constants/products';
 
 type AppFixture = {
   app: Application;
@@ -54,7 +55,7 @@ type CartOptions = {
 export const checkoutFixture = loggedUserFixture.extend<AppFixture & { cartOptions: CartOptions }>({
   /* cartOptions: default value + { option: true } makes it overridable via .use() inside describe
   Default: ['Sauce Labs Backpack'] */
-  cartOptions: [{ products: ['Sauce Labs Backpack'] }, { option: true }],
+  cartOptions: [{ products: [Products.Backpack] }, { option: true }],
   app: async ({ app, cartOptions }, use) => {
     // Add all products from cartOptions (can be overridden per describe)
     if (cartOptions.products?.length) {

@@ -22,11 +22,9 @@ export class Overview extends AppPage {
   private labelShippingInfo = this.page.getByTestId('shipping-info-label');
   private valueShippingInfo = this.page.getByTestId('shipping-info-value');
   private labelPriceTotal = this.page.getByTestId('total-info-label');
-  private labelTotal = this.page.getByTestId('total-label');
   private subtotalLabel = this.page.getByTestId('subtotal-label');
   private taxLabel = this.page.getByTestId('tax-label');
   private totalLabel = this.page.getByTestId('total-label');
-
   private cancelButton = this.page.getByTestId('cancel');
   private finishButton = this.page.getByTestId('finish');
 
@@ -42,7 +40,7 @@ export class Overview extends AppPage {
       expect(this.labelPaymentInfo).toBeVisible(),
       expect(this.labelShippingInfo).toBeVisible(),
       expect(this.labelPriceTotal).toBeVisible(),
-      expect(this.labelTotal).toBeVisible(),
+      expect(this.totalLabel).toBeVisible(),
       expect(this.subtotalLabel).toBeVisible(),
       expect(this.taxLabel).toBeVisible(),
       expect(this.totalLabel).toBeVisible(),

@@ -1,16 +1,10 @@
 import { completedCheckoutFixture } from '../../app/fixtures';
+import { ALL_PRODUCTS } from '../../app/constants/products';
 
 completedCheckoutFixture.describe('Submit order', () => {
   completedCheckoutFixture.use({
     cartOptions: {
-      products: [
-        'Sauce Labs Backpack',
-        'Sauce Labs Bike Light',
-        'Sauce Labs Bolt T-Shirt',
-        'Sauce Labs Fleece Jacket',
-        'Sauce Labs Onesie',
-        'Test.allTheThings() T-Shirt (Red)',
-      ],
+      products: ALL_PRODUCTS.slice(),
     },
   });
 
