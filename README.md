@@ -31,15 +31,6 @@
 
 ## ⚡ Quick Start
 
-### Install and run tests locally
-
-```bash
-npm ci
-npx playwright install --with-deps
-npm test
-npx playwright show-report
-```
-
 ### Environment file
 
 ```ini
@@ -74,6 +65,15 @@ PERF_PASS=secret_sauce
 
 VISUAL_USER=visual_user
 VISUAL_PASS=secret_sauce
+```
+
+### Install and run tests locally
+
+```bash
+npm ci
+npx playwright install --with-deps
+npm test
+npx playwright show-report
 ```
 
 ### Run filtered tests
